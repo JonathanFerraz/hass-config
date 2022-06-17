@@ -1,0 +1,14 @@
+device_tracker:
+  - platform: icloud3
+    username: !secret icloud_email
+    password: !secret icloud_password
+    create_sensors: zon,zonn,ttim,zdis,cdis,wdis,nupdt,lupdt,info`
+    exclude_sensors: zont,zonfn,lzont,lzonfn,zonts,bat
+    event_log_card_directory: "www/custom_cards"
+    config_ic3_file_name: "/config/config_ic3.yaml"
+    tracking_method: iosapp
+    devices:
+      - device_name: iphone
+        name: Jonathan
+        email: !secret icloud_email
+        picture: /local/jonathan.jpg

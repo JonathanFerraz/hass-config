@@ -1,0 +1,22 @@
+switch:
+  - platform: template
+    switches:
+      monitor_power:
+        turn_on:
+          service: script.pc_gamer_displays_on
+        turn_off:
+          service: script.pc_gamer_displays_off
+        friendly_name: "Monitor Power"
+      hyperion_controller:
+        turn_on:
+          service: script.pc_gamer_run_hyperion
+        turn_off:
+          if:
+            condition: state
+            entity_id: light.first_led_hardware_instance
+            state: "on"
+          then:
+            condition: state
+            entity_id: light.first_led_hardware_instance
+            state: "off"
+        friendly_name: "Hyperion Controller"

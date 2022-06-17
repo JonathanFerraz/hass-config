@@ -1,0 +1,17 @@
+zone:
+  - name: Home
+    latitude: !secret latitude_home
+    longitude: !secret longitude_home
+    radius: 50
+    icon: mdi:home
+
+  - name: Gym
+    latitude: !secret latitude_gym
+    longitude: !secret longitude_gym
+    icon: mdi:dumbbell
+
+  - name: Girlfriend
+    latitude: !secret latitude_girlfriend
+    longitude: !secret longitude_girlfriend
+    radius: 100
+    icon: mdi:heart-multiple
