@@ -1,7 +1,7 @@
 action: fire-dom-event
 browser_mod:
   command: popup
-  title: Jonathan Ferraz
+  title: Matheus
   style:
     hui-vertical-stack-card:
       $: |
@@ -63,17 +63,17 @@ browser_mod:
         card_mod:
           class: content
         entities:
-          - entity: person.jonathan_ferraz
+          - entity: person.matheus_ferraz
             secondary_info: last-changed
 
       - type: history-graph
         entities:
-          - entity: person.jonathan_ferraz
+          - entity: person.matheus_ferraz
 
       - type: glance
         show_state: false
         entities:
-          - entity: sensor.iphone_connection_type
+          - entity: sensor.iphone_de_matt_connection_type
             name: Router
             icon: mdi:wifi
             card_mod:
@@ -82,7 +82,7 @@ browser_mod:
                   color: {{ is_state(config.entity, 'Wi-Fi') | iif('#3182b7', '#3c3f3f') }};
                 }
 
-          - entity: device_tracker.iphone_de_jonathan
+          - entity: device_tracker.iphone_de_matt
             name: Position
             icon: custom:iphone-modern
             card_mod:
@@ -94,7 +94,7 @@ browser_mod:
         template: icon_name
         tap_action:
           action: call-service
-          service: notify.mobile_app_iphone
+          service: notify.mobile_app_iphone_de_matt
           service_data:
             title: Encontre meu iphone
             message: Aqui estou
@@ -109,4 +109,4 @@ browser_mod:
         default_zoom: 16
         dark_mode: true
         entities:
-          - device_tracker.iphone_de_jonathan
+          - device_tracker.iphone_de_matt

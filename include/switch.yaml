@@ -1,4 +1,9 @@
 switch:
+  - platform: wake_on_lan
+    name: wol_imac
+    host: !secret wake_on_lan_host
+    mac: !secret wake_on_lan_mac
+
   - platform: template
     switches:
       monitor_power:

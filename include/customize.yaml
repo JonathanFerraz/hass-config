@@ -7,14 +7,12 @@ homeassistant:
     #person
     person.jonathan_ferraz:
       entity_picture: /local/jonathan.jpg
-    device_tracker.iphone:
+    device_tracker.iphone_de_jonathan:
       entity_picture: /local/device_tracker.svg
-    person.matheus_ferraz:
-      entity_picture: /local/matheus.jpg
-
-    #media_player
-    media_player.spotify:
-      friendly_name: Spotify
+    # person.matheus_ferraz:
+    #   entity_picture: /local/matheus.jpg
+    # device_tracker.iphone_de_matt:
+    #   entity_picture: /local/device_tracker.svg
 
     #Sensor
     sensor.monitors_volume:

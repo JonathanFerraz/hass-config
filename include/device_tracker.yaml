@@ -1,14 +1,32 @@
 device_tracker:
   - platform: icloud3
-    username: !secret icloud_email
-    password: !secret icloud_password
-    create_sensors: zon,zonn,ttim,zdis,cdis,wdis,nupdt,lupdt,info`
-    exclude_sensors: zont,zonfn,lzont,lzonfn,zonts,bat
+    username: !secret icloud_jonathan_email
+    password: !secret icloud_jonathan_password
+    create_sensors: zon,zonn,zonfn,ttim,wdis,bat,batstat
     event_log_card_directory: "www/custom_cards"
     config_ic3_file_name: "/config/config_ic3.yaml"
+    unit_of_measurement: km
+    distance_method: waze
+    waze_region: BR
     tracking_method: iosapp
     devices:
-      - device_name: iphone
-        name: Jonathan
-        email: !secret icloud_email
+      - device_name: iphone_de_jonathan
+        name: iPhone de Jonathan
+        email: !secret icloud_jonathan_email
         picture: /local/jonathan.jpg
+
+  # - platform: icloud3
+  #   username: !secret icloud_matheus_email
+  #   password: !secret icloud_matheus_password
+  #   create_sensors: zon,zonn,zonfn,ttim,wdis,bat,batstat
+  #   event_log_card_directory: "www/custom_cards"
+  #   config_ic3_file_name: "/config/config_ic32.yaml"
+  #   unit_of_measurement: km
+  #   distance_method: waze
+  #   waze_region: BR
+  #   tracking_method: iosapp
+  #   devices:
+  #     - device_name: iphone_de_matt
+  #       name: iPhone de Matheus
+  #       email: !secret icloud_matheus_email
+  #       picture: /local/matheus.jpg

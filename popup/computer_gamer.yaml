@@ -1,0 +1,161 @@
+action: fire-dom-event
+browser_mod:
+  command: popup
+  title: Informações
+  style:
+    hui-vertical-stack-card:
+      $: |
+        hui-horizontal-stack-card {
+          padding: 0em 1.6em 2em 2em;
+        }
+      $hui-horizontal-stack-card$: |
+        #root {
+          justify-content: space-evenly;
+        }
+  card:
+    type: vertical-stack
+    cards:
+      - type: entities
+        show_header_toggle: false
+        entities:
+          - type: custom:bar-card
+            width: 45%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: "%"
+            positions: &bar_card_positions
+              icon: outside
+              indicator: "off"
+              name: outside
+            severity: &bar_card_severity
+              - color: "#6d2525"
+                from: 80
+                to: 999
+            entity_row: true
+            entities:
+              - entity: sensor.setup_cpu_usage
+                name: Processador
+                icon: mdi:chip
+              - entity: sensor.setup_memory_usage
+                name: Memória - 16GB
+                icon: mdi:memory
+
+          - entity: sensor.setup_system_uptime
+            name: Tempo ligado
+            icon: mdi:clock-outline
+            device_class: timestamp
+
+          - entity: sensor.amd_ryzen_5_3600_6_core_processor_temperature
+            name: CPU - Ryzen 5 3600
+            icon: mdi:thermometer
+
+          - entity: sensor.geforce_gtx_1660_temperature
+            name: GPU - GTX 1660
+            icon: mdi:thermometer
+
+          - entity: sensor.geforce_rtx_3060_temperature
+            name: GPU - RTX 3060
+            icon: mdi:thermometer
+
+          - type: custom:bar-card
+            width: 45%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: "%"
+            positions: *bar_card_positions
+            severity: *bar_card_severity
+            entity_row: true
+            entities:
+              - entity: sensor.setup_storage_c_usage
+                name: Windows - 240GB
+                icon: mdi:harddisk
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Trabalho
+            icon: mdi:television-stop
+            template: icon_name
+            tap_action:
+              action: call-service
+              service: script.pc_gamer_stop_work
+
+          - type: custom:button-card
+            name: Limpar
+            icon: mdi:file-remove
+            template: icon_name
+            tap_action:
+              action: call-service
+              service: script.pc_gamer_remove_temporary_files
+
+      - type: entities
+        show_header_toggle: false
+        card_mod:
+          class: add-header
+          style: |
+            mini-graph-card {
+              margin: -20.7px 0px 0px 0px;
+            }
+            .footer {
+              overflow: hidden !important;
+            }
+            #states {
+              padding: 21px !important
+            }
+
+        entities:
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            cards:
+              - type: entities
+                show_name: false
+                entities:
+                  - entity: sensor.speedtest_download
+                    icon: mdi:download
+                    show_name: false
+                    tap_action:
+                      action: none
+                    card_mod:
+                      style: >
+                        :host {
+                          --paper-item-icon-color: green;
+                        }
+
+              - type: entities
+                show_name: false
+                entities:
+                  - entity: sensor.speedtest_upload
+                    icon: mdi:upload
+                    show_name: false
+                    tap_action:
+                      action: none
+                    card_mod:
+                      style: >
+                        :host {
+                          --paper-item-icon-color: #385581;
+                        }
+        footer:
+          type: custom:mini-graph-card
+          entities:
+            - color: "#385581"
+              entity: sensor.speedtest_upload
+            - color: green
+              entity: sensor.speedtest_download
+          align_state: left
+          group: false
+          points_per_hour: 15
+          line_width: 3
+          hour24: true
+          hours_to_show: 1.5
+          show:
+            {
+              fill: fade,
+              icon: false,
+              name: false,
+              state: false,
+              name_adaptive_color: true,
+              labels: false,
+              legend: false,
+            }
+          tap_action:
+            action: none

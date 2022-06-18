@@ -3,7 +3,7 @@ frontend:
     - /hacsfiles/lovelace-card-mod/card-mod.js
 
   themes:
-    tablet:
+    blurred:
       #default dark mode
       primary-text-color: "#e1e1e1"
       primary-background-color: "#111111"
@@ -80,7 +80,7 @@ frontend:
       #                                                  #
       ####################################################
 
-      card-mod-theme: tablet
+      card-mod-theme: blurred
 
       card-mod-root: |
         ha-app-layout {
@@ -128,27 +128,6 @@ frontend:
                   margin: 2vw 0 0 0 !important;
                 }
               }
-
-        #################################################
-        #                                               #
-        #               SWIPE CARD MARGIN               #
-        #                                               #
-        #################################################
-
-            $swipe-card$:
-              .: |
-                div {
-                  height: 100%;
-                }
-                .swiper-container {
-                  margin: -1.5vw !important;
-                  padding: 1.5vw !important;
-                }
-              hui-horizontal-stack-card$:
-                .: |
-                  hui-conditional-card {
-                    margin: 0 0.1vw 0 0 !important;
-                  }
 
         #################################################
         #                                               #

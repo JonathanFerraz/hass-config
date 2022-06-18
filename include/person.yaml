@@ -1,5 +1,0 @@
-person:
-  - name: Matheus Ferraz
-    id: matheus
-    device_trackers:
-      - device_tracker.iphone

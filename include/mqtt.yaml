@@ -2,12 +2,10 @@ mqtt:
   sensor:
     - name: "jonathan_last_changed"
       state_topic: "homeassistant/persistence/jonathan"
-      retain: true
       value_template: >
         {{ value | replace(' ', 'T') }}
 
     - name: "matheus_last_changed"
       state_topic: "homeassistant/persistence/matheus"
-      retain: true
       value_template: >
         {{ value | replace(' ', 'T') }}
