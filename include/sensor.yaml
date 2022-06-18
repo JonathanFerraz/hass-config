@@ -4,6 +4,12 @@ sensor:
       - time
       - date
 
+  - platform: systemmonitor
+    resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: last_boot
+
   - platform: template
     sensors:
       precipitation:

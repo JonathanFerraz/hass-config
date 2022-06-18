@@ -37,58 +37,58 @@ template:
             {% else %} Boa noite {{'\U0001F974'}}
             {% endif %}
             </b>
-          active: >
-            <b>
-            {% set lights = [
-              states.light.ambilight,
-              states.light.mesa,
-              states.light.first_led_hardware_instance,
-            ] %}
+          # active: >
+          #   <b>
+          #   {% set lights = [
+          #     states.light.ambilight,
+          #     states.light.mesa,
+          #     states.light.first_led_hardware_instance,
+          #   ] %}
 
-            {% set switches = [
-              states.switch.monitor_power,
-              states.switch.hyperion_controller,
-            ] %}
+          #   {% set switches = [
+          #     states.switch.monitor_power,
+          #     states.switch.hyperion_controller,
+          #   ] %}
 
-            {% set lights_on = lights | selectattr('state','eq','on') | list %}
-            {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+          #   {% set lights_on = lights | selectattr('state','eq','on') | list %}
+          #   {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
 
-            {% set switches_on = switches | selectattr('state','eq','on') | list %}
-            {% set append = switches_on  %}
-            {% set switches_name = append | map(attribute='name') | join(', ') %}
+          #   {% set switches_on = switches | selectattr('state','eq','on') | list %}
+          #   {% set append = switches_on  %}
+          #   {% set switches_name = append | map(attribute='name') | join(', ') %}
 
-            {% if (lights_on | length == 0) and (switches_on | length > 0) %}
-              {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
+          #   {% if (lights_on | length == 0) and (switches_on | length > 0) %}
+          #     {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
 
-            {% elif (lights_on | length == 1) and (switches_on | length == 1) %}
-              {{ lights_name }} e {{switches_name }} estão ligados
+          #   {% elif (lights_on | length == 1) and (switches_on | length == 1) %}
+          #     {{ lights_name }} e {{switches_name }} estão ligados
 
-            {% elif (lights_on | length == 1) and (switches_on | length > 1) %}
-              {{ lights_name }}, {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
+          #   {% elif (lights_on | length == 1) and (switches_on | length > 1) %}
+          #     {{ lights_name }}, {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
 
-            {% elif (lights_on | length > 1) and (switches_on | length == 1) %}
-              {{ lights_on | length }} lâmpadas e {{ switches_name }} estão ligados
+          #   {% elif (lights_on | length > 1) and (switches_on | length == 1) %}
+          #     {{ lights_on | length }} lâmpadas e {{ switches_name }} estão ligados
 
-            {% elif (lights_on | length > 1) and (switches_on | length > 1) %}
-              {{ lights_on | length }} lâmpadas, {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
+          #   {% elif (lights_on | length > 1) and (switches_on | length > 1) %}
+          #     {{ lights_on | length }} lâmpadas, {{ switches_name | regex_replace(',([^,]*)$',' e\\1') }} está ligado
 
-            {% elif (lights_on | length == 1) and (switches_on | length == 0) %}
-              {{ lights_name }} está ligado
+          #   {% elif (lights_on | length == 1) and (switches_on | length == 0) %}
+          #     {{ lights_name }} está ligado
 
-            {% elif (lights_on | length > 1) and (switches_on | length == 0) %}
-              {{ lights_on | length }} luzes estão acesas
+          #   {% elif (lights_on | length > 1) and (switches_on | length == 0) %}
+          #     {{ lights_on | length }} luzes estão acesas
 
-            {% else %}
-              <font color='#6a7377'>Tudo está desligado</font>
-            {% endif %}
-            </b>
+          #   {% else %}
+          #     <font color='#6a7377'>Tudo está desligado</font>
+          #   {% endif %}
+          #   </b>
           weather: >
             {% set temperature = states('weather.home') %}
             {% set apparent = states('sensor.home_apparent_temperature') | round %}
             {% set precip = states('sensor.precipitation') | round %}
             {% if temperature != 'unavailable' %}
               {% if temperature | float(default=0) <= 0.0 %}
-                {{ temperature }} - {{ apparent }}°c, com {{ precip }}% de risco de chuva {{ '\u2614\uFE0F' if precip > 30 }}
+                Estão {{ apparent }}°c, com {{ precip }}% de risco de chuva {{ '\u2614\uFE0F' if precip > 30 }}
               {% endif %}
             {% else %}
               Não foi possível carregar as informações meteorológicas...
