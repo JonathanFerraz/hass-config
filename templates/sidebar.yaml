@@ -1,0 +1,61 @@
+- sensor:
+    - unique_id: sidebar
+      state: template
+      attributes:
+        time: >
+          {%- set hours = now().strftime('%I') %}
+          {%- set minutes = now().strftime('%M') %}
+          {%- set ampm = now().strftime('%p') %}
+          <span class="time">
+            {{ hours }}<span class="time-colon">:</span>{{ minutes }}
+          </span>
+          <br>
+          {{ ampm }}
+        date: >
+          <font color='#6a7377'><b>
+            {% if strptime(states('sensor.date'), '%Y-%m-%d').day != null %}
+            {% set days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'] %}
+            {% set months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+            'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'] %}
+              {{ days[now().weekday()] }}<br>
+            {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} de {{ months[now().month-1] }}
+            {% endif %}
+          </b></font>
+        greet: >
+          <b>
+          {% set time = now().hour %}
+          {% if time <= 1 %} Boa noite {{'\U0001F611'}}
+          {% elif time <= 3 %} Boa noite {{'\U0001F62A'}}
+          {% elif time <= 5 %} Boa noite {{'\U0001F634'}}
+          {% elif time <= 7 %} Bom dia {{'\U0001F4A9'}}
+          {% elif time <= 9 %} Bom dia {{'\u2615\uFE0F'}}
+          {% elif time <= 12 %} Bom dia {{'\U0001F642'}}
+          {% elif time <= 13 %} Boa tarde {{'\U0001F60A'}}
+          {% elif time <= 15 %} Boa tarde {{'\U0001F60E'}}
+          {% elif time <= 17 %} Boa tarde {{'\U0001F44B\U0001F3FB'}}
+          {% elif time <= 19 %} Boa noite {{'\U0001F44B\U0001F3FB'}}
+          {% elif time <= 22 %} Boa noite {{'\U0001F60C'}}
+          {% elif time <= 23 %} Boa noite {{'\U0001F974'}}
+          {% else %} Boa noite {{'\U0001F974'}}
+          {% endif %}
+          </b>
+        weather: |
+          {%- set temperature = states('sensor.weather_temperature') | float %}
+          {%- set apparent = states('sensor.home_apparent_temperature') | round %}
+          {%- set precip = states('sensor.weather_precipitation') | round %}
+          {% if not is_state('sensor.home_temperature', 'unknown') %}
+            Estão {{ apparent }}°c, com {{ precip }}% de risco de chuva {{ '\u2614\uFE0F' if precip > 30 }}
+          {%- else %}
+            Não foi possível carregar as informações meteorológicas...
+          {%- endif %}
+        # weather: >
+        #   {% set temperature = states('sensor.home_temperature') %}
+        #   {% set apparent = states('sensor.home_apparent_temperature') | round %}
+        #   {% set precip = states('sensor.home_precipitation') | round %}
+        #   {% if temperature != 'unavailable' %}
+        #     {% if temperature | float(default=0) <= 0.0 %}
+        #       Estão {{ apparent }}°c, com {{ precip }}% de risco de chuva {{ '\u2614\uFE0F' if precip > 30 }}
+        #     {% endif %}
+        #   {% else %}
+        #     Não foi possível carregar as informações meteorológicas...
+        #   {% endif %}

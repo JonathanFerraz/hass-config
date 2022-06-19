@@ -1,4 +1,9 @@
 sensor:
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
+      - /config/home-assistant.log
+
   - platform: time_date
     display_options:
       - time
@@ -29,9 +34,19 @@ sensor:
         value_template: "{{ states('sensor.geforce_gtx_1660_speed') | float | round(2)}}"
 
       # Weather
-      precipitation:
+      weather_precipitation:
         friendly_name: "Chance de chuva"
         value_template: "{{ states('sensor.home_precipitation') | float }}"
+
+      weather_temperature:
+        friendly_name: "Temperatura"
+        entity_id: weather.home
+        value_template: "{{ state_attr('weather.home', 'temperature') }}"
+
+      weather_humidity:
+        friendly_name: "Humidade"
+        entity_id: weather.home
+        value_template: "{{ state_attr('weather.home', 'humidity') }}"
 
       # Hass
       hass_version_installed:
@@ -79,6 +94,6 @@ sensor:
 
   - platform: integration
     source: sensor.tomada_pc_gamer_power
-    name: PC Mineração - Consumo
+    name: PC Gamer - Consumo
     unit_prefix: k
     round: 2

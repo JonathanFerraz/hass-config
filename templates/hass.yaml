@@ -1,0 +1,13 @@
+- sensor:
+    - unique_id: hass_version
+      state: >
+        {{ 'Mais recente' if states('sensor.hass_version_installed') ==
+        states('sensor.hass_version_latest') else states('sensor.hass_version_latest') }}
+      attributes:
+        friendly_name: >
+          Instalado {{ states('sensor.hass_version_installed') }}
+        icon: mdi:home-assistant
+
+    - unique_id: hacs_version
+      state: >
+        {{ device_attr(device_id('sensor.hacs'), 'sw_version') }}

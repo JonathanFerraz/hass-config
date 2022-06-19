@@ -1,4 +1,3 @@
-
 iphone_de_jonathan:
   name: Jonathan
   mac:
@@ -7,7 +6,7 @@ iphone_de_jonathan:
   track: true
 
 iphone_de_matheus:
-  name: iPhone de Jonathan
+  name: iPhone de Matheus
   mac:
   icon:
   picture:

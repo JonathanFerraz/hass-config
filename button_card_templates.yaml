@@ -763,7 +763,7 @@ updater_hacs:
   state_display: |
     [[[
       if (entity) {
-        
+
           let output = '',
               count = parseInt(entity.state) || 0,
               subtitle = count === 0
@@ -981,7 +981,7 @@ person:
             return s < 60 ? parseInt(s) + 's' : m < 60 ? parseInt(m) + 'm' : h < 24 ? parseInt(h) + 'h' : parseInt(d) + 'd';
           },
           
-           last_changed = states[variables.retain] == null || states[variables.retain].state == 'unavailable' || states[variables.retain].state == 'Desconhecido'
+           last_changed = states[variables.retain] == null || states[variables.retain].state == 'unavailable' || states[variables.retain].state == 'unknown'
             ? time(Date.now() - Date.parse(entity.last_changed))
             : time(Date.now() - Date.parse(states[variables.retain].state)),
           stroke = variables.state === 'home'

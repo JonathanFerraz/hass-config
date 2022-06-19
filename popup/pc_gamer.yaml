@@ -139,8 +139,10 @@ browser_mod:
           entities:
             - color: "#385581"
               entity: sensor.speedtest_upload
+              show_points: false
             - color: green
               entity: sensor.speedtest_download
+              show_points: false
           align_state: left
           group: false
           points_per_hour: 15

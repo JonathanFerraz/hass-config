@@ -7,12 +7,12 @@ views:
       #default
       margin: 0
       grid-gap: var(--custom-layout-card-padding)
-      grid-template-columns: repeat(4, 1fr) 0
-      grid-template-rows: 0 repeat(2, fit-content(100%)) 0fr
+      grid-template-columns: repeat(4, 1fr)
+      grid-template-rows: repeat(2, fit-content(100%)) 0.85fr
       grid-template-areas: |
         "sidebar  .           .       .       ."
         "sidebar  grid-1      grid-2  grid-3  ."
-        "sidebar  grid-4      grid-5  grid-6   ."
+        "sidebar  grid-4      grid-5  grid-6  ."
         "sidebar  footer      footer  footer  ."
       mediaquery:
         #phone
@@ -25,7 +25,7 @@ views:
             ".  sidebar     sidebar  ."
             ".  grid-1      grid-2   ."
             ".  grid-3      grid-4   ."
-            ".  grid-5      grid-6    ."
+            ".  grid-5      grid-6   ."
             ".  footer      footer   ."
             ".  .           .        ."
         #portrait
@@ -41,7 +41,7 @@ views:
             "sidebar  footer      footer  ."
             "sidebar  .           .       ."
     cards:
-      - type: custom:button-card #extra_styles fix
+      - type: custom:button-card
         styles: { card: [display: none] }
 
       #################################################
@@ -87,38 +87,16 @@ views:
           - type: custom:button-card
             entity: switch.monitor_power
             name: Monitores
-            # state_display: >
-            #   [[[
-            #     if (variables.state === false || variables.state === 'off') {
-            #       return 'Desligado';
-            #     }
-            #     if (variables.state === true || variables.state === 'on' || ) {
-            #       return 'Ligado';
-            #     }
-            #   ]]]
             template:
               - base
               - icon_tv
               - loader
               - lock
-            variables:
-              lock: >
-                [[[
-                  let lock = states['lock.monitores'];
-                  return lock === undefined || lock.state;
-                ]]]
 
           - type: custom:button-card
             entity: switch.hyperion_controller
             name: Ambilight
-            # card_mod:
-            #   style: |
-            #     :host {
-            #       {% if is_state('switch.hyperion_controller', 'on') and is_state('light.first_led_hardware_instance', 'unavaiable')%}
-            #         color: '#4285f4';
-            #         pointer-events: none
-            #       {% endif %}
-            #     }
+
             template:
               - base
               - icon_hue
@@ -139,7 +117,7 @@ views:
           - type: custom:button-card
             entity: switch.computer_gamer
             name: PC
-            hold_action: !include popup/computer_gamer.yaml
+            hold_action: !include popup/pc_gamer.yaml
             template:
               - base
               - icon_imac
@@ -204,41 +182,27 @@ views:
         cards:
           - type: custom:button-card
             entity: person.jonathan_ferraz
-            name: Jonathan Ferraz
+            name: Jonathan
             triggers_update:
               - sensor.jonathan_last_changed
             tap_action: !include popup/house_jonathan.yaml
+            hold_action:
+              action: none
             variables:
               retain: sensor.jonathan_last_changed
             template: person
 
-          # - type: custom:button-card
-          #   entity: person.matheus_ferraz
-          #   name: Matheus Ferraz
-          #   triggers_update:
-          #     - sensor.matheus_last_changed
-          #   tap_action: !include popup/house_matheus.yaml
-          #   variables:
-          #     retain: sensor.matheus_last_changed
-          #   template: person
-
           - type: custom:button-card
-            entity: script.home_leave
-            name: Fechar tudo
+            entity: person.matheus_ferraz
+            name: Matheus
+            triggers_update:
+              - sensor.matheus_last_changed
+            tap_action: !include popup/house_matheus.yaml
             hold_action:
               action: none
-            template:
-              - base
-              - icon_away
-
-          - type: custom:button-card
-            entity: script.home_arrive
-            name: House
-            hold_action:
-              action: none
-            template:
-              - base
-              - icon_home
+            variables:
+              retain: sensor.matheus_last_changed
+            template: person
 
       #################################################
       #                                               #
@@ -274,7 +238,7 @@ views:
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updates
-            tap_action: !include popup/footer/updater.yaml
+            tap_action: !include popup/footer/updates.yaml
             variables:
               notify: >
                 [[[

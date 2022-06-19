@@ -88,6 +88,10 @@ frontend:
           background-size: cover;
         }
 
+        #contentContainer {
+          padding-top: 0px!important
+        }
+
       card-mod-view-yaml: |
         .: |
           hui-view {

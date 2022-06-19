@@ -56,8 +56,12 @@ browser_mod:
           - entity: sensor.template_hass_version
 
           - entity: sensor.home_assistant_v2_db_size
-            name: DB Size
+            name: Database
+
             icon: mdi:database
+          - entity: sensor.home_assistant_log_size
+            name: Log
+            icon: mdi:file-document
 
           - entity: update.home_assistant_google_drive_backup_update
             name: Backup Google
@@ -68,12 +72,12 @@ browser_mod:
 
           - entity: sensor.processor_use
             attribute: cpu_percentage
-            name: Processor
+            name: Processador
             icon: mdi:chip
 
           - entity: sensor.memory_use_percent
             attribute: memory_percentage
-            name: Memory
+            name: Memória
             icon: mdi:memory
 
           - type: custom:hui-horizontal-stack-card

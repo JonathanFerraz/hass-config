@@ -1,0 +1,12 @@
+logger:
+  default: info
+  logs:
+    homeassistant.components.websocket_api: fatal
+    homeassistant.components.camera: fatal
+    homeassistant.components.mqtt: warning
+    homeassistant.components.sensor: warn
+    homeassistant.helpers.entity: fatal
+    homeassistant.setup: info
+    homeassistant.core: info
+    homeassistant.loader: warning
+    custom_components.alexa_media: info

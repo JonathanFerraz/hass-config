@@ -1,0 +1,14 @@
+# Atualmente, está utilizando sensor de temperatura local, e não ambiente
+# Realizar compra de sensor de temperature e humidade de ambiente
+climate:
+  - platform: generic_thermostat
+    name: Ar Condicionado
+    heater: switch.ar_condicionado
+    target_sensor: sensor.weather_temperature
+    ac_mode: true
+    min_temp: 16
+    max_temp: 30
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    initial_hvac_mode: "off"
+    precision: 1

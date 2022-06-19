@@ -1,6 +1,3 @@
-default_config:
-energy:
-
 homeassistant:
   name: !secret home_name
   latitude: !secret latitude_home
@@ -12,35 +9,19 @@ homeassistant:
   temperature_unit: C
   time_zone: !secret time_zone
   currency: BRL
-  allowlist_external_dirs:
-    - /config
+  allowlist_external_dirs: [/config/]
   packages: !include_dir_named include
 
-tts:
-  - platform: google_translate
-
-browser_mod:
-  prefix: browser_
+default_config:
+config:
+energy:
+mobile_app:
+template: !include_dir_merge_list templates
 
 recorder:
   db_url: !secret recorder_db_url
   purge_keep_days: 5
   commit_interval: 30
-
-logger:
-  default: warning
-  logs:
-    homeassistant.components.websocket_api: fatal
-    homeassistant.components.camera: fatal
-    homeassistant.helpers.entity: fatal
-    custom_components.monitor_docker.helpers: fatal
-
-notify:
-  - name: ALL_DEVICES
-    platform: group
-    services:
-      - service: mobile_app_iphone_de_jonathan
-      - service: mobile_app_iphone_de_matheus
 
 lovelace:
   mode: yaml
@@ -62,6 +43,9 @@ lovelace:
       { url: "/local/vanilla-tilt.min.js?v=1.7.2", type: module },
       { url: /local/font.css, type: css },
     ]
+
+browser_mod:
+  prefix: browser_
 
 # Custom components
 nicehash:

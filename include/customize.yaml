@@ -9,10 +9,10 @@ homeassistant:
       entity_picture: /local/jonathan.jpg
     device_tracker.iphone_de_jonathan:
       entity_picture: /local/device_tracker.svg
-    # person.matheus_ferraz:
-    #   entity_picture: /local/matheus.jpg
-    # device_tracker.iphone_de_matt:
-    #   entity_picture: /local/device_tracker.svg
+    person.matheus_ferraz:
+      entity_picture: /local/matheus.jpg
+    device_tracker.iphone_de_matheus:
+      entity_picture: /local/device_tracker.svg
 
     #Sensor
     sensor.monitors_volume:

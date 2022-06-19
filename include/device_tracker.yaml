@@ -12,15 +12,14 @@ device_tracker:
         email: !secret icloud_jonathan_email
         picture: /local/jonathan.jpg
 
-  # - platform: icloud3
-  #   username: !secret icloud_matheus_email
-  #   password: !secret icloud_matheus_password
-  #   create_sensors: zon,bat,batstat
-  #   unit_of_measurement: km
-  #   waze_region: BR
-  #   tracking_method: famshr
-  #   devices:
-  #     - device_name: iphone_de_matt
-  #       name: iPhone de Matheus
-  #       email: !secret icloud_matheus_email
-  #       picture: /local/matheus.jpg
+  - platform: icloud3
+    username: !secret icloud_matheus_email
+    password: !secret icloud_matheus_password
+    create_sensors: zon,bat,batstat
+    unit_of_measurement: km
+    tracking_method: iosapp
+    devices:
+      - device_name: iphone_de_matheus
+        name: iPhone de Matheus
+        email: !secret icloud_matheus_email
+        picture: /local/matheus.jpg

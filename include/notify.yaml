@@ -1,0 +1,6 @@
+notify:
+  - name: ALL_DEVICES
+    platform: group
+    services:
+      - service: mobile_app_iphone_de_jonathan
+      - service: mobile_app_iphone_de_matheus
