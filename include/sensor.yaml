@@ -12,25 +12,61 @@ sensor:
 
   - platform: template
     sensors:
-      precipitation:
-        friendly_name: "Chance de chuva"
-        value_template: "{{ states('sensor.home_precipitation') | float }}"
-
-  - platform: template
-    sensors:
       # Mining tracker
       btc_price:
         friendly_name: "Bitcoin Price"
         unit_of_measurement: "BRL"
         value_template: "{{ ((states.sensor.coinmarketcap_curl.attributes.data.BTC.quote.BRL.price) | float) | round(2) }}"
+
       rtx3060_speed_formatted:
         friendly_name: "RTX 3060 Speed"
         unit_of_measurement: "MH/s"
         value_template: "{{ states('sensor.geforce_rtx_3060_speed') | float | round(2)}}"
+
       gtx1660_speed_formatted:
         friendly_name: "GTX 1660 Speed"
         unit_of_measurement: "MH/s"
         value_template: "{{ states('sensor.geforce_gtx_1660_speed') | float | round(2)}}"
+
+      # Weather
+      precipitation:
+        friendly_name: "Chance de chuva"
+        value_template: "{{ states('sensor.home_precipitation') | float }}"
+
+      # Hass
+      hass_version_installed:
+        friendly_name: "Home Assistant Core: Installed"
+        entity_id: update.home_assistant_core_update
+        value_template: "{{ state_attr('update.home_assistant_core_update', 'installed_version') }}"
+
+      hass_version_latest:
+        friendly_name: "Home Assistant Core: Latest"
+        entity_id: update.home_assistant_core_update
+        value_template: "{{ state_attr('update.home_assistant_core_update', 'latest_version') }}"
+
+  - platform: command_line
+    name: hacs_installed
+    command: |-
+      python3 << EOF
+      import os, json
+      installed = {"repositories": []}
+      path = "/config/.storage/hacs/"
+      for file in os.listdir(path):
+          name, ext = os.path.splitext(file)
+          if ext == ".hacs":
+              hacs_file = path + file
+              with open(hacs_file, "r") as file:
+                  dict = json.load(file)
+                  name = dict["data"]["full_name"]
+                  installed["repositories"] += [name]
+                  file.close()
+      print(json.dumps(installed))
+      EOF
+    value_template: >
+      {{ value_json.repositories | count }}
+    json_attributes:
+      - repositories
+    scan_interval: 86400
 
   # Coinmarketcap
   - platform: command_line

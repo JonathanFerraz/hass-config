@@ -58,20 +58,6 @@ views:
             entity: sensor.template_sidebar
             template: sidebar
 
-          - type: conditional
-            conditions:
-              - entity: input_boolean.laundry_display
-                state: "on"
-            card:
-              type: custom:button-card
-              entity: timer.laundry
-              hold_action:
-                action: call-service
-                service: input_boolean.turn_off
-                service_data:
-                  entity_id: input_boolean.laundry_display
-              template: laundry
-
       #################################################
       #                                               #
       #                     GRID-1                    #

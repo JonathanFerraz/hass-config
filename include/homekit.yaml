@@ -6,6 +6,7 @@ homekit:
         - light.mesa
         - select.mesa_preset
         - switch.monitor_power
+        - switch.hyperion_controller
     entity_config:
       light.ambilight:
         name: LED - Monitor
@@ -17,3 +18,5 @@ homekit:
         name: PRESET - Mesa
       switch.monitor_power:
         name: POWER - Monitor
+      switch.hyperion_controller:
+        name: Ambilight

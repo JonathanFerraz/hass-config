@@ -34,7 +34,6 @@ browser_mod:
         entity: sensor.hass_version_installed
         triggers_update:
           - sensor.hass_version_latest
-          - sensor.hass_version_latest_beta
         name: Atualizar HASS
         icon: mdi:update
         styles:
@@ -44,8 +43,7 @@ browser_mod:
                 [[[
                   return `[[[
                     if (entity) {
-                      return entity.state === states['sensor.hass_version_latest'].state ||
-                        entity.state === states['sensor.hass_version_latest_beta'].state
+                      return entity.state === states['sensor.hass_version_latest'].state
                           ? 'opacity(30%)'
                           : 'drop-shadow(3px 3px 5px #00000050)';
                     }

@@ -59,6 +59,10 @@ browser_mod:
             name: DB Size
             icon: mdi:database
 
+          - entity: update.home_assistant_google_drive_backup_update
+            name: Backup Google
+            icon: mdi:database
+
           - entity: sensor.last_boot
             name: Last boot
 
@@ -75,7 +79,7 @@ browser_mod:
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
-                name: Home Assistant
+                name: Restart
                 icon: mdi:reload
                 tap_action:
                   services: |

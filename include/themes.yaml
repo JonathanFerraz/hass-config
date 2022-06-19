@@ -155,27 +155,6 @@ frontend:
 
         #################################################
         #                                               #
-        #             SIDEBAR LAUNDRY TIMER             #
-        #                                               #
-        #################################################
-
-        grid-layout$hui-vertical-stack-card$hui-conditional-card:
-          .: |
-            hui-conditional-card {
-              display: flex;
-              justify-content: center;
-            }
-            /* phone */
-            @media screen and (max-width: 800px) {
-              hui-conditional-card > button-card {
-                zoom: 250%;
-                width: 100%;
-                filter: contrast(85%);
-              }
-            }
-
-        #################################################
-        #                                               #
         #                    FOOTER                     #
         #                                               #
         #################################################
