@@ -1,0 +1,216 @@
+automation:
+  - alias: Turn all leds off when home leave
+    id: "hass-1"
+    trigger:
+      - entity_id: person.jonathan_ferraz
+        platform: state
+        from: home
+        to: not_home
+    condition: []
+    action:
+      - entity_id: light.ambilight
+        service: light.turn_off
+      - entity_id: light.mesa
+        service: light.turn_off
+      - service: switch.turn_off
+        entity_id: switch.hyperion_controller
+      - service: switch.turn_off
+        entity_id: switch.monitor_power
+      - service: notify.mobile_app_iphone
+        data:
+          title: >
+            Detecção de presença
+          message: "Desligando as leds do setup"
+
+  - alias: Turn all leds on when home enter
+    id: "hass-2"
+    trigger:
+      - entity_id: person.jonathan_ferraz
+        platform: state
+        from: not_home
+        to: home
+    condition: []
+    action:
+      - entity_id: light.ambilight
+        service: light.turn_on
+      - entity_id: light.mesa
+        service: light.turn_on
+      - service: switch.turn_on
+        entity_id: switch.hyperion_controller
+      - service: switch.turn_on
+        entity_id: switch.monitor_power
+
+  - alias: clear_log_filesize
+    id: "hass-3"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.home_assistant_log_size
+      above: 50
+    action:
+      service: shell_command.ha_purge_logs
+
+  - alias: person_home
+    id: "hass-4"
+    mode: parallel
+    trigger:
+      platform: state
+      entity_id:
+        - person.jonathan_ferraz
+        - person.matheus_ferraz
+      from:
+        - home
+        - not_home
+      to:
+        - home
+        - not_home
+    action:
+      service: mqtt.publish
+      data:
+        topic_template: >
+          homeassistant/persistence/{{ trigger.to_state | lower }}
+        payload_template: >
+          {{ now() }}
+        retain: true
+
+  - alias: Setup led morning
+    id: "hass-5"
+    trigger:
+      - platform: time
+        at: "09:25:00"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: "on"
+      - condition: state
+        entity_id: device_tracker.iphone_de_matt
+        state: "not_home"
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.ambilight
+      - service: light.turn_on
+        data:
+          entity_id: light.mesa
+      - service: select.select_option
+        target:
+          entity_id: select.mesa_preset
+        data:
+          option: Morning
+
+  - alias: Setup led effects
+    id: "hass-6"
+    trigger:
+      platform: time
+      at: "10:30:00"
+    condition:
+      - condition: state
+        entity_id: binary_sensor.workday_sensor
+        state: "on"
+      - condition: state
+        entity_id: light.mesa
+        state: "on"
+      - condition: state
+        entity_id: light.ambilight
+        state: "on"
+      - condition: state
+        entity_id: device_tracker.iphone_de_matt
+        state: "not_home"
+    action:
+      - service: select.select_option
+        target:
+          entity_id: select.mesa_preset
+        data:
+          option: Chroma
+      - service: switch.turn_on
+        entity_id: switch.hyperion_controller
+
+  - alias: Rig miner alert
+    id: "hass-7"
+    trigger:
+      - platform: state
+        entity_id: sensor.rtx3060_speed_formatted
+        to: "0.0"
+      - platform: state
+        entity_id: sensor.gtx1660_speed_formatted
+        to: "0.0"
+    condition:
+      - condition: state
+        entity_id: sensor.geforce_rtx_3060_status
+        state: Mining
+      - condition: state
+        entity_id: sensor.geforce_gtx_1660_status
+        state: Mining
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+          title: RIG Status
+          message: A RIG não está minerando!
+          data:
+            push:
+              sound:
+                name: default
+                critical: 1
+                volume: 1
+      - condition: state
+        entity_id: person.jonathan_ferraz
+        state: home
+      - service: notify.alexa_media_echo_dot_de_jonathan
+        data:
+          message: Não está minerando
+          data:
+            type: tts
+
+  - alias: turn on script on workdays
+    id: "hass-8"
+    trigger:
+      platform: time
+      at: "09:00:00"
+    condition:
+      condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.monitor_power
+      - data: {}
+        service: script.pc_gamer_start_work
+
+  - alias: iphone battery low
+    id: "hass-9"
+    trigger:
+      - platform: state
+        entity_id: sensor.iphone_battery_level
+        to: "20"
+    condition:
+      - condition: state
+        entity_id: device_tracker.iphone
+        state: "home"
+      - condition: state
+        entity_id: sensor.iphone_battery_state
+        state: "Not Charging"
+    action:
+      - service: notify.alexa_media_echo_dot_de_jonathan
+        data:
+          message: Colocar iPhone para carregar
+          data:
+            type: tts
+
+  - alias: iphone battery full
+    id: "hass-10"
+    trigger:
+      - platform: state
+        entity_id: sensor.iphone_battery_level
+        to: "100"
+    condition:
+      - condition: state
+        entity_id: device_tracker.iphone
+        state: "home"
+      - condition: state
+        entity_id: sensor.iphone_battery_state
+        state: "Charging"
+    action:
+      - service: notify.alexa_media_echo_dot_de_jonathan
+        data:
+          message: O iPhone está carregado
+          data:
+            type: tts
