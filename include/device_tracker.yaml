@@ -3,23 +3,15 @@ device_tracker:
     username: !secret icloud_jonathan_email
     password: !secret icloud_jonathan_password
     create_sensors: zon,bat,batstat
+    exclude_sensors: zont,zonfn,lzont,lzonfn,zonts,zonn,ttim,zdis,cdis,wdis,nupdt,lupdt,info
     unit_of_measurement: km
-    distance_method: waze
     tracking_method: iosapp
     devices:
-      - device_name: iphone_de_jonathan
-        name: iPhone de Jonathan
+      - device_name: iphone
+        name: iPhone de Jonathan iCloud3
         email: !secret icloud_jonathan_email
         picture: /local/jonathan.jpg
-
-  - platform: icloud3
-    username: !secret icloud_matheus_email
-    password: !secret icloud_matheus_password
-    create_sensors: zon,bat,batstat
-    unit_of_measurement: km
-    tracking_method: iosapp
-    devices:
-      - device_name: iphone_de_matheus
-        name: iPhone de Matheus
+      - device_name: iphone_de_matt
+        name: iPhone de Matheus iCloud3
         email: !secret icloud_matheus_email
         picture: /local/matheus.jpg

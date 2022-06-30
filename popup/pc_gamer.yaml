@@ -33,10 +33,10 @@ browser_mod:
                 to: 999
             entity_row: true
             entities:
-              - entity: sensor.setup_cpu_usage
+              - entity: sensor.pc_gamer_cpu_usada
                 name: Processador
                 icon: mdi:chip
-              - entity: sensor.setup_memory_usage
+              - entity: sensor.pc_gamer_ram_usada
                 name: Memória - 16GB
                 icon: mdi:memory
 
@@ -46,6 +46,7 @@ browser_mod:
             device_class: timestamp
 
           - entity: sensor.amd_ryzen_5_3600_6_core_processor_temperature
+            decimal: 2
             name: CPU - Ryzen 5 3600
             icon: mdi:thermometer
 
@@ -66,7 +67,7 @@ browser_mod:
             severity: *bar_card_severity
             entity_row: true
             entities:
-              - entity: sensor.setup_storage_c_usage
+              - entity: sensor.pc_gamer_ssd_usado_c
                 name: Windows - 240GB
                 icon: mdi:harddisk
 

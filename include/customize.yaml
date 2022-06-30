@@ -11,7 +11,7 @@ homeassistant:
       entity_picture: /local/device_tracker.svg
     person.matheus_ferraz:
       entity_picture: /local/matheus.jpg
-    device_tracker.iphone_de_matheus:
+    device_tracker.iphone_de_matt:
       entity_picture: /local/device_tracker.svg
 
     #Sensor

@@ -68,7 +68,7 @@ browser_mod:
 
       - type: history-graph
         entities:
-          - entity: person.matheus_ferraz
+          - entity: device_tracker.iphone_de_matt
 
       - type: glance
         show_state: false
@@ -82,7 +82,7 @@ browser_mod:
                   color: {{ is_state(config.entity, 'Wi-Fi') | iif('#3182b7', '#3c3f3f') }};
                 }
 
-          - entity: device_tracker.iphone_de_matheus
+          - entity: device_tracker.iphone_de_matt
             name: Position
             icon: custom:iphone-modern
             card_mod:
@@ -109,4 +109,4 @@ browser_mod:
         default_zoom: 16
         dark_mode: true
         entities:
-          - device_tracker.iphone_de_matheus
+          - person.matheus_ferraz

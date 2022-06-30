@@ -2,4 +2,4 @@ person:
   - name: Matheus Ferraz
     id: matheus
     device_trackers:
-      - device_tracker.iphone_de_matheus
+      - device_tracker.iphone_de_matt

@@ -91,7 +91,6 @@ views:
               - base
               - icon_tv
               - loader
-              - lock
 
           - type: custom:button-card
             entity: switch.hyperion_controller
@@ -115,7 +114,8 @@ views:
         columns: 2
         cards:
           - type: custom:button-card
-            entity: switch.computer_gamer
+            entity: binary_sensor.my_computer_connected
+            # entity: switch.my_computer
             name: PC
             hold_action: !include popup/pc_gamer.yaml
             template:
@@ -126,13 +126,7 @@ views:
             variables:
               lock: >
                 [[[
-                  let lock = states['lock.dator'];
-                  return lock === undefined || lock.state;
-                ]]]
-              trigger: >
-                [[[
-                  let trigger = states['script.home_leave'];
-                  return trigger === undefined || trigger;
+                  return 'locked';
                 ]]]
 
           - type: custom:button-card
@@ -141,8 +135,7 @@ views:
             template:
               - base_default
               - icon_alexa
-              # - circle
-              # - loader
+
             variables:
               circle_input: >
                 [[[
@@ -151,7 +144,7 @@ views:
                 ]]]
 
           - type: custom:button-card
-            entity: climate.ac
+            entity: climate.ar_condicionado
             name: Clima
             hold_action: !include popup/ar_climate.yaml
             template:
@@ -244,16 +237,12 @@ views:
                 [[[
                   let hass_installed = hass.config.version,
                     hass_version_latest = states['sensor.hass_version_latest'],
-                    hass_version_latest_beta = states['sensor.hass_version_latest_beta'],
                     hacs = states['sensor.hacs'];
 
                   if (hass_version_latest && hass_version_latest.state.includes('.')
-                    && hass_version_latest_beta && hass_version_latest_beta.state.includes('.')
                     && hacs && Number.isInteger(parseInt(hacs.state))) {
 
-                    let hass_latest = hass_installed.includes('b')
-                        ? hass_version_latest_beta.state
-                        : hass_version_latest.state,
+                    let hass_latest = hass_version_latest.state,
                       hass_count = hass_installed !== hass_latest ? 1 : 0;
                     return hass_count + parseInt(hacs.state);
                   }

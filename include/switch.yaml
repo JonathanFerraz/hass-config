@@ -1,7 +1,16 @@
 switch:
+  - platform: template
+    switches:
+      my_computer:
+        friendly_name: "Ordenador"
+        value_template: "{{ is_state('binary_sensor.my_computer_connected', 'on') }}"
+        turn_on:
+          service: script.pc_gamer_wake
+        turn_off:
+          service: script.pc_gamer_shutdown
+        icon_template: mdi:laptop
+
   - platform: wake_on_lan
-    name: wol_imac
-    host: !secret wake_on_lan_host
     mac: !secret wake_on_lan_mac
 
   - platform: template
@@ -16,12 +25,8 @@ switch:
         turn_on:
           service: script.pc_gamer_run_hyperion
         turn_off:
-          if:
-            condition: state
-            entity_id: light.first_led_hardware_instance
-            state: "on"
-          then:
-            condition: state
-            entity_id: light.first_led_hardware_instance
-            state: "off"
+          - service: light.turn_off
+            target:
+              entity_id: light.first_led_hardware_instance
+          - service: script.pc_gamer_close_hyperion
         friendly_name: "Hyperion Controller"

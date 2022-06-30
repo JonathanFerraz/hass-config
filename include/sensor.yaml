@@ -47,6 +47,7 @@ sensor:
         friendly_name: "Humidade"
         entity_id: weather.home
         value_template: "{{ state_attr('weather.home', 'humidity') }}"
+        unit_of_measurement: "%"
 
       # Hass
       hass_version_installed:
@@ -58,6 +59,19 @@ sensor:
         friendly_name: "Home Assistant Core: Latest"
         entity_id: update.home_assistant_core_update
         value_template: "{{ state_attr('update.home_assistant_core_update', 'latest_version') }}"
+
+      # Energy
+      wled_ambilight_power:
+        friendly_name: "Mesa Power"
+        unit_of_measurement: "W"
+        value_template: "{{ states('sensor.ambilight_estimated_current') | float * 5 / 1000 }}"
+        device_class: energy
+
+      wled_mesa_power:
+        friendly_name: "Ambilight Power"
+        unit_of_measurement: "W"
+        value_template: "{{ states('sensor.mesa_estimated_current') | float * 5 / 1000 }}"
+        device_class: energy
 
   - platform: command_line
     name: hacs_installed
@@ -97,3 +111,44 @@ sensor:
     name: PC Gamer - Consumo
     unit_prefix: k
     round: 2
+
+  - platform: integration
+    source: sensor.wled_ambilight_power
+    name: Ambilight - Consumo
+    unit_prefix: k
+    round: 2
+
+  # IOTLink
+
+  - platform: mqtt
+    name: "PC Gamer - CPU Usada"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/cpu/usage"
+    unit_of_measurement: "%"
+    icon: mdi:speedometer
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - RAM Usada"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/memory/usage"
+    unit_of_measurement: "%"
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - SSD Usado (C)"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/hard-drive/c/drive-usage"
+    unit_of_measurement: "%"
+    icon: mdi:chart-donut
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1

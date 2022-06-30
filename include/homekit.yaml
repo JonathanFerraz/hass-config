@@ -7,7 +7,8 @@ homekit:
         - select.mesa_preset
         - switch.monitor_power
         - switch.hyperion_controller
-        - sensor.weather_home
+        - sensor.home_apparent_temperature
+        - climate.ar_condicionado
     entity_config:
       light.ambilight:
         name: LED - Monitor
@@ -21,5 +22,7 @@ homekit:
         name: POWER - Monitor
       switch.hyperion_controller:
         name: Ambilight
-      sensor.weather_home:
+      sensor.home_apparent_temperature:
         name: Temperatura
+      climate.ar_condicionado:
+        name: Ar Condicionado
