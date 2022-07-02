@@ -48,6 +48,14 @@ script:
           topic: "iotlink/workgroup/setup/commands/displays/on"
           payload: ""
 
+  pc_gamer_refresh_infos:
+    alias: "PC Gamer - Refresh"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/setup/refresh"
+          payload: ""
+
   pc_gamer_start_work:
     alias: "PC Gamer - Iniciar Trabalho"
     sequence:

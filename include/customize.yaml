@@ -15,21 +15,9 @@ homeassistant:
       entity_picture: /local/device_tracker.svg
 
     #Sensor
-    sensor.monitors_volume:
-      icon: mdi:volume-high
-
     sensor.home_assistant_v2_db:
       friendly_name: Databas
       icon: mdi:database
-
-    sensor.home_assistant_log:
-      friendly_name: Loggfil
-      icon: mdi:file-document
-
-    sensor.imac_uptime:
-      friendly_name: Senaste omstart
-      icon: mdi:update
-      device_class: timestamp
 
     sensor.uptime:
       friendly_name: Senast omstart

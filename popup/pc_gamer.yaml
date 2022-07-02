@@ -69,7 +69,7 @@ browser_mod:
             entities:
               - entity: sensor.pc_gamer_ssd_usado_c
                 name: Windows - 240GB
-                icon: mdi:harddisk
+                icon: custom:imac-ssd
 
       - type: horizontal-stack
         cards:
@@ -109,10 +109,10 @@ browser_mod:
             card_type: horizontal-stack
             cards:
               - type: entities
-                show_name: false
                 entities:
                   - entity: sensor.speedtest_download
                     icon: mdi:download
+                    show_state: true
                     show_name: false
                     tap_action:
                       action: none
@@ -123,11 +123,9 @@ browser_mod:
                         }
 
               - type: entities
-                show_name: false
                 entities:
                   - entity: sensor.speedtest_upload
                     icon: mdi:upload
-                    show_name: false
                     tap_action:
                       action: none
                     card_mod:

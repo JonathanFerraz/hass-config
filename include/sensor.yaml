@@ -152,3 +152,14 @@ sensor:
     payload_available: "ON"
     payload_not_available: "OFF"
     qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - Up Time"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/system/uptime"
+    unit_of_measurement: "seconds"
+    icon: mdi:timer
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1

@@ -16,6 +16,8 @@ automation:
         entity_id: switch.hyperion_controller
       - service: switch.turn_off
         entity_id: switch.monitor_power
+      - data: {}
+        service: script.pc_gamer_lock
       - service: notify.mobile_app_iphone
         data:
           title: >
@@ -39,8 +41,13 @@ automation:
         entity_id: switch.hyperion_controller
       - service: switch.turn_on
         entity_id: switch.monitor_power
+      - service: notify.mobile_app_iphone
+        data:
+          title: >
+            Detecção de presença
+          message: "Ligando as leds do setup"
 
-  - alias: clear_log_filesize
+  - alias: Clear log filesize
     id: "hass-3"
     trigger:
       platform: numeric_state
@@ -67,7 +74,7 @@ automation:
       service: mqtt.publish
       data:
         topic_template: >
-          homeassistant/persistence/{{ trigger.to_state | lower }}
+          homeassistant/persistence/{{ trigger.to_state.attributes.id | lower }}
         payload_template: >
           {{ now() }}
         retain: true
@@ -81,9 +88,9 @@ automation:
       - condition: state
         entity_id: binary_sensor.workday_sensor
         state: "on"
-      - condition: state
-        entity_id: device_tracker.iphone_de_matt
-        state: "not_home"
+      - condition: template
+        value_template: >
+          {{states('device_tracker.iphone_de_matt') != 'home'}}
     action:
       - service: light.turn_on
         data:
@@ -94,6 +101,11 @@ automation:
       - service: select.select_option
         target:
           entity_id: select.mesa_preset
+        data:
+          option: Morning
+      - service: select.select_option
+        target:
+          entity_id: select.ambilight_preset
         data:
           option: Morning
 
@@ -112,9 +124,9 @@ automation:
       - condition: state
         entity_id: light.ambilight
         state: "on"
-      - condition: state
-        entity_id: device_tracker.iphone_de_matt
-        state: "not_home"
+      - condition: template
+        value_template: >
+          {{states('device_tracker.iphone_de_matt') != 'home'}}
     action:
       - service: select.select_option
         target:
@@ -140,6 +152,17 @@ automation:
       - condition: state
         entity_id: sensor.geforce_gtx_1660_status
         state: Mining
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: sensor.rtx3060_speed_formatted
+            state: "0.0"
+          - condition: state
+            entity_id: sensor.gtx1660_speed_formatted
+            state: "0.0"
+      - condition: time
+        after: "09:00:00"
+        before: "00:00:00"
     action:
       - service: notify.mobile_app_iphone
         data:
@@ -160,11 +183,11 @@ automation:
           data:
             type: tts
 
-  - alias: turn on script on workdays
+  - alias: Turn on script on workdays
     id: "hass-8"
     trigger:
       platform: time
-      at: "09:00:00"
+      at: "09:25:00"
     condition:
       condition: state
       entity_id: binary_sensor.workday_sensor
@@ -172,15 +195,16 @@ automation:
     action:
       - service: switch.turn_on
         entity_id: switch.monitor_power
+      - delay: "00:00:05"
       - data: {}
         service: script.pc_gamer_start_work
 
-  - alias: iphone battery low
+  - alias: iPhone battery low
     id: "hass-9"
     trigger:
-      - platform: state
+      - platform: numeric_state
         entity_id: sensor.iphone_battery_level
-        to: "20"
+        below: 21
     condition:
       - condition: state
         entity_id: device_tracker.iphone
@@ -194,13 +218,19 @@ automation:
           message: Colocar iPhone para carregar
           data:
             type: tts
+      - service: notify.mobile_app_iphone
+        data:
+          title: Aviso de bateria
+          message: A bateria do seu iPhone precisa ser carregada
+          data:
+            message: carregue o iPhone
 
-  - alias: iphone battery full
+  - alias: iPhone battery full
     id: "hass-10"
     trigger:
-      - platform: state
+      - platform: numeric_state
         entity_id: sensor.iphone_battery_level
-        to: "100"
+        above: 99
     condition:
       - condition: state
         entity_id: device_tracker.iphone
@@ -214,3 +244,9 @@ automation:
           message: O iPhone está carregado
           data:
             type: tts
+      - service: notify.mobile_app_iphone
+        data:
+          title: Aviso de bateria
+          message: A bateria do seu iPhone está carregada
+          data:
+            message: retire do carregador
