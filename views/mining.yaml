@@ -1,0 +1,104 @@
+- title: Mining
+  path: mining
+  cards:
+    # - type: entity
+    #   title: Bitcoin price
+    #   entity: sensor.btc_price
+    #   tap_action: none
+    #   hold_action: none
+    #   unit: "R$"
+    #   icon: mdi:currency-btc
+
+    - type: custom:mini-graph-card
+      icon: mdi:currency-usd
+        - sensor.btc_price
+      decimals: 2
+      points_per_hour: 12
+      hours_to_show: 12
+      line_width: 3
+      smoothing: true
+      animate: true
+      update_interval: 5
+      tap_action: none
+      show:
+        labels: false
+        labels_secondary: false
+        legend: false
+        fill: true
+        # points: false
+      color_thresholds:
+        - value: 101000
+          color: green
+        - value: 100000
+          color: orange
+        - value: 99000
+          color: red
+      style: |
+        ha-card { 
+          background: #00000020;
+          border-radius: 12px
+        }
+
+    - type: entity
+      title: Nicehash account balance
+      entity: sensor.nicehash_available_account_balance_usd
+      tap_action: none
+      hold_action: none
+      icon: mdi:currency-usd
+      style: |
+        ha-card { 
+          background: #00000020;
+          border-radius: 12px
+        }
+
+    - type: custom:mini-graph-card
+      entities:
+        - sensor.setup_profitability
+      decimals: 8
+      smoothing: true
+      animate: true
+      update_interval: 5
+      tap_action: none
+      points_per_hour: 2
+      hours_to_show: 24
+      line_width: 3
+      show:
+        labels: false
+        labels_secondary: false
+        legend: false
+        fill: true
+      style: |
+        ha-card { 
+          background: #00000020;
+          border-radius: 12px
+        }
+
+    - type: custom:mini-graph-card
+      entities:
+        - sensor.nicehash_recent_mining_payout
+      decimals: 8
+      show:
+        graph: bar
+      style: |
+        ha-card { 
+          background: #00000020;
+          border-radius: 12px
+        }
+
+    - type: custom:mini-graph-card
+      entities:
+        - entity: sensor.setup_speed
+          name: SETUP
+        - entity: sensor.geforce_rtx_3060_speed
+          name: RTX 3060
+        - entity: sensor.geforce_gtx_1660_speed
+          name: GTX 1660
+      decimals: 2
+      unit_of_measurement: MH/s
+      show:
+        graph: bar
+      style: |
+        ha-card { 
+          background: #00000020;
+          border-radius: 12px
+        }

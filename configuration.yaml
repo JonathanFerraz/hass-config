@@ -17,11 +17,18 @@ config:
 energy:
 mobile_app:
 template: !include_dir_merge_list templates
+browser_mod:
+  prefix: browser_
 
 recorder:
   db_url: !secret recorder_db_url
   purge_keep_days: 5
   commit_interval: 30
+
+frontend:
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
 
 lovelace:
   mode: yaml
@@ -34,6 +41,7 @@ lovelace:
       { url: /hacsfiles/lovelace-card-mod/card-mod.js, type: module },
       { url: /hacsfiles/light-popup-card/light-popup-card.js, type: module },
       { url: /hacsfiles/light-entity-card/light-entity-card.js, type: module },
+      { url: /hacsfiles/sidebar-card/sidebar-card.js, type: module },
       {
         url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,
         type: module,
@@ -43,17 +51,3 @@ lovelace:
       { url: "/local/vanilla-tilt.min.js?v=1.7.2", type: module },
       { url: /local/font.css, type: css },
     ]
-
-browser_mod:
-  prefix: browser_
-
-# Custom components
-nicehash:
-  organization_id: !secret nice-hash-organization_id
-  api_key: !secret nice-hash-api_key
-  api_secret: !secret nice-hash-api_secret
-  currency: USD
-  balances: true
-  rigs: true
-  devices: true
-  payouts: true

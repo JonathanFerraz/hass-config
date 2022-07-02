@@ -1,0 +1,302 @@
+- type: custom:grid-layout
+  title: Bedroom
+  path: bedroom
+  layout:
+    #default
+    margin: 0
+    # grid-gap: var(--custom-layout-card-padding)
+    grid-gap: 60px 100px
+    grid-template-columns: 0.4fr 350px 350px 350px 0.3fr
+    # grid-template-columns: repeat(4, 1fr)
+    grid-template-rows: repeat(2, fit-content(100%)) 0.85fr
+    # grid-template-areas: |
+    #   "sidebar  .           .       .       ."
+    #   "sidebar  grid-1      grid-2  grid-3  ."
+    #   "sidebar  grid-4      grid-5  grid-6  ."
+    #   "sidebar  footer      footer  footer  ."
+    grid-template-areas: |
+      ".  .           .       .       ."
+      ".  grid-1      grid-2  grid-3  ."
+      ".  grid-4      grid-5  grid-6  ."
+      ".  footer      footer  footer  ."
+    mediaquery:
+      #phone
+      "(max-width: 800px)":
+        grid-gap: calc(var(--custom-layout-card-padding) * 1.7)
+        grid-template-columns: 0 repeat(2, 1fr) 0
+        grid-template-rows: 0 repeat(4, fit-content(100%)) 0fr
+        # grid-template-areas: |
+        #   ".  .           .        ."
+        #   ".  sidebar     sidebar  ."
+        #   ".  grid-1      grid-2   ."
+        #   ".  grid-3      grid-4   ."
+        #   ".  grid-5      grid-6   ."
+        #   ".  footer      footer   ."
+        #   ".  .           .        ."
+        grid-template-areas: |
+          ".  .           .        ."
+          ".  grid-1      grid-2   ."
+          ".  grid-3      grid-4   ."
+          ".  grid-5      grid-6   ."
+          ".  footer      footer   ."
+          ".  .           .        ."
+      #portrait
+      "(max-width: 1200px)":
+        grid-gap: var(--custom-layout-card-padding)
+        grid-template-columns: repeat(3, 1fr) 0
+        grid-template-rows: 0 repeat(3, fit-content(100%)) 0fr
+        # grid-template-areas: |
+        #   "sidebar  .           .       ."
+        #   "sidebar  grid-1      grid-2  ."
+        #   "sidebar  grid-3      grid-4  ."
+        #   "sidebar  grid-5      grid-6   ."
+        #   "sidebar  footer      footer  ."
+        #   "sidebar  .           .       ."
+        grid-template-areas: |
+          ".           .       ."
+          "grid-1      grid-2  ."
+          "grid-3      grid-4  ."
+          "grid-5      grid-6   ."
+          "footer      footer  ."
+          ".           .       ."
+  cards:
+    - type: custom:button-card
+      styles: { card: [display: none] }
+
+    #################################################
+    #                                               #
+    #                    SIDEBAR                    #
+    #                                               #
+    #################################################
+
+    # - type: vertical-stack
+    #   view_layout:
+    #     grid-area: sidebar
+    #   cards:
+    #     - type: custom:button-card
+    #       entity: sensor.template_sidebar
+    #       template: sidebar
+
+    # - type: vertical-stack
+    #   view_layout:
+    #     grid-area: sidebar
+    #   cards:
+    #     - type: custom:sidebar-card
+    #       entity: sensor.template_sidebar
+    #       template: sidebar
+    #       digitalClock: true
+    #       sidebarMenu:
+    #         - action: navigate
+    #           navigation_path: "/lovelace/home"
+    #           name: "Home"
+    #           active: true
+    #           hold_action:
+    #             action: none
+    #           style:
+    #             border-radius: 5vw
+    #             left: 11.7%
+    #             top: 26%
+    #             width: 20.5078125%
+    #         - action: navigate
+    #           navigation_path: "/lovelace/mining"
+    #           name: "Mining"
+    #           active: true
+    #           hold_action:
+    #             action: none
+    #           style:
+    #             border-radius: 5vw
+    #             left: 11.7%
+    #             top: 26%
+    #             width: 20.5078125%
+
+    #################################################
+    #                                               #
+    #                     GRID-1                    #
+    #                                               #
+    #################################################
+
+    - type: grid
+      title: Setup
+      view_layout:
+        grid-area: grid-1
+      columns: 2
+      cards:
+        - type: custom:button-card
+          entity: light.ambilight
+          name: LED Monitor
+          template:
+            - light
+            - icon_hue
+
+        - type: custom:button-card
+          entity: light.mesa
+          name: LED Mesa
+          template:
+            - light
+            - icon_hue
+
+        - type: custom:button-card
+          entity: switch.monitor_power
+          name: Monitores
+          template:
+            - base
+            - icon_tv
+            - loader
+
+        - type: custom:button-card
+          entity: switch.hyperion_controller
+          name: Ambilight
+
+          template:
+            - base
+            - icon_hue
+            - loader
+
+    #################################################
+    #                                               #
+    #                    GRID-2                     #
+    #                                               #
+    #################################################
+
+    - type: grid
+      title: Acessórios
+      view_layout:
+        grid-area: grid-2
+      columns: 2
+      cards:
+        - type: custom:button-card
+          entity: binary_sensor.my_computer_connected
+          # entity: switch.my_computer
+          name: PC
+          hold_action: !include /config/popup/pc_gamer.yaml
+          template:
+            - base
+            - icon_imac
+            - loader
+            - lock
+          variables:
+            lock: >
+              [[[
+                return 'locked';
+              ]]]
+
+        - type: custom:button-card
+          entity: media_player.echo_dot_de_jonathan
+          name: Alexa
+          template:
+            - base_default
+            - icon_alexa
+
+          variables:
+            circle_input: >
+              [[[
+                let sensor = states['media_player.echo_dot_de_jonathan'];
+                return sensor === undefined || sensor.state;
+              ]]]
+
+        - type: custom:button-card
+          entity: climate.ar_condicionado
+          name: Clima
+          hold_action: !include /config/popup/ar_climate.yaml
+          template:
+            - base
+            - icon_climate
+            - climate
+          variables:
+            circle_input: >
+              [[[
+                if (entity) {
+                  return entity.state === 'cool' ?
+                    entity.attributes.temperature :
+                    entity.attributes.current_temperature;
+                }
+              ]]]
+
+    #################################################
+    #                                               #
+    #                    GRID-3                     #
+    #                                               #
+    #################################################
+
+    - type: grid
+      title: House
+      view_layout:
+        grid-area: grid-3
+      columns: 2
+      cards:
+        - type: custom:button-card
+          entity: person.jonathan_ferraz
+          name: Jonathan
+          triggers_update:
+            - sensor.jonathan_last_changed
+          tap_action: !include /config/popup/house_jonathan.yaml
+          hold_action:
+            action: none
+          variables:
+            retain: sensor.jonathan_last_changed
+          template: person
+
+        - type: custom:button-card
+          entity: person.matheus_ferraz
+          name: Matheus
+          triggers_update:
+            - sensor.matheus_last_changed
+          tap_action: !include /config/popup/house_matheus.yaml
+          hold_action:
+            action: none
+          variables:
+            retain: sensor.matheus_last_changed
+          template: person
+
+        #################################################
+        #                                               #
+        #                    FOOTER                     #
+        #                                               #
+        #################################################
+
+        # - type: horizontal-stack
+        #   view_layout:
+        #     grid-area: footer
+        #   cards:
+        #     - type: custom:button-card
+        #       name: >
+        #         <ha-icon icon="mdi:nas"></ha-icon> HASS
+        #       tap_action: !include popup/footer/hass.yaml
+        #       variables:
+        #         notify: >
+        #           [[[
+        #             let status = states['sensor.nas_volume_1_status'],
+        #               security = states['binary_sensor.nas_security_status'],
+        #               disk_use = states['sensor.disk_use_percent'],
+        #               nas_update = states['binary_sensor.nas_update_available'];
+        #             if (status && security && disk_use && nas_update) {
+        #               return nas_update.state === 'on'
+        #                 ? 1
+        #                 : status.state === 'background_scrubbing' ||
+        #                   security.state === 'on' ||
+        #                   parseFloat(disk_use.state) >= 85;
+        #             }
+        #           ]]]
+        #       template: footer
+
+        # - type: custom:button-card
+        #   name: >
+        #     <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updates
+        #   tap_action: !include popup/footer/updates.yaml
+        #   variables:
+        #     notify: >
+        #       [[[
+        #         let hass_installed = hass.config.version,
+        #           hass_version_latest = states['sensor.hass_version_latest'],
+        #           hacs = states['sensor.hacs'];
+
+        #         if (hass_version_latest && hass_version_latest.state.includes('.')
+        #           && hacs && Number.isInteger(parseInt(hacs.state))) {
+
+        #           let hass_latest = hass_version_latest.state,
+        #             hass_count = hass_installed !== hass_latest ? 1 : 0;
+        #           return hass_count + parseInt(hacs.state);
+        #         }
+        #         return 0;
+        #       ]]]
+        #   template: footer
