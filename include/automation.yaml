@@ -237,7 +237,7 @@ automation:
         state: "home"
       - condition: state
         entity_id: sensor.iphone_battery_state
-        state: "Charging"
+        state: "Full"
     action:
       - service: notify.alexa_media_echo_dot_de_jonathan
         data:

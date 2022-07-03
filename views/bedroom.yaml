@@ -166,9 +166,8 @@
       cards:
         - type: custom:button-card
           entity: binary_sensor.my_computer_connected
-          # entity: switch.my_computer
           name: PC
-          hold_action: !include /config/popup/pc_gamer.yaml
+          tap_action: !include /config/popup/pc_gamer.yaml
           template:
             - base
             - icon_imac

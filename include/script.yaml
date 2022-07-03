@@ -1,21 +1,5 @@
 script:
   # PC Gamer Configuration
-  pc_gamer_shutdown:
-    alias: "PC Gamer - Shutdown"
-    sequence:
-      - service: mqtt.publish
-        data:
-          topic: "iotlink/workgroup/setup/commands/shutdown"
-          payload: ""
-
-  pc_gamer_wake:
-    alias: "PC Gamer - Wake"
-    sequence:
-      - service: wake_on_lan.send_magic_packet
-        data:
-          mac: !secret wake_on_lan_mac
-    mode: single
-
   pc_gamer_lock:
     alias: "PC Gamer - Bloquear"
     sequence:
@@ -23,14 +7,6 @@ script:
         data:
           topic: "iotlink/workgroup/setup/commands/lock"
           payload: ""
-
-  pc_gamer_toogle:
-    alias: PC Albert toggle
-    sequence:
-      - service: switch.toggle
-        target:
-          entity_id: switch.my_computer
-    mode: single
 
   pc_gamer_displays_off:
     alias: "PC Gamer - Monitores OFF"

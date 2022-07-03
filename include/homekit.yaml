@@ -2,9 +2,7 @@ homekit:
   - filter:
       include_entities:
         - light.ambilight
-        - select.ambilight_preset
         - light.mesa
-        - select.mesa_preset
         - switch.monitor_power
         - switch.hyperion_controller
         - sensor.home_apparent_temperature
@@ -12,12 +10,8 @@ homekit:
     entity_config:
       light.ambilight:
         name: LED - Monitor
-      select.ambilight_preset:
-        name: PRESET - Monitor
       light.mesa:
         name: LED - Mesa
-      select.mesa_preset:
-        name: PRESET - Mesa
       switch.monitor_power:
         name: POWER - Monitor
       switch.hyperion_controller:
