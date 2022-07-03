@@ -1,4 +1,6 @@
 automation:
+  # Presence detection
+
   - alias: Turn all leds off when home leave
     id: "hass-1"
     trigger:
@@ -47,15 +49,6 @@ automation:
             Detecção de presença
           message: "Ligando as leds do setup"
 
-  - alias: Clear log filesize
-    id: "hass-3"
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.home_assistant_log_size
-      above: 50
-    action:
-      service: shell_command.ha_purge_logs
-
   - alias: person_home
     id: "hass-4"
     mode: parallel
@@ -78,6 +71,8 @@ automation:
         payload_template: >
           {{ now() }}
         retain: true
+
+  # LED Routine
 
   - alias: Setup led morning
     id: "hass-5"
@@ -136,6 +131,33 @@ automation:
       - service: switch.turn_on
         entity_id: switch.hyperion_controller
 
+  - alias: Turn on script on workdays
+    id: "hass-8"
+    trigger:
+      platform: time
+      at: "09:25:00"
+    condition:
+      condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.monitor_power
+      - delay: "00:00:05"
+      - data: {}
+        service: script.pc_gamer_start_work
+
+  # Other
+
+  - alias: Clear log filesize
+    id: "hass-3"
+    trigger:
+      platform: numeric_state
+      entity_id: sensor.home_assistant_log_size
+      above: 50
+    action:
+      service: shell_command.ha_purge_logs
+
   - alias: Rig miner alert
     id: "hass-7"
     trigger:
@@ -183,21 +205,7 @@ automation:
           data:
             type: tts
 
-  - alias: Turn on script on workdays
-    id: "hass-8"
-    trigger:
-      platform: time
-      at: "09:25:00"
-    condition:
-      condition: state
-      entity_id: binary_sensor.workday_sensor
-      state: "on"
-    action:
-      - service: switch.turn_on
-        entity_id: switch.monitor_power
-      - delay: "00:00:05"
-      - data: {}
-        service: script.pc_gamer_start_work
+  # Battery Alert
 
   - alias: iPhone battery low
     id: "hass-9"
@@ -207,23 +215,37 @@ automation:
         below: 21
     condition:
       - condition: state
-        entity_id: device_tracker.iphone
-        state: "home"
-      - condition: state
         entity_id: sensor.iphone_battery_state
         state: "Not Charging"
     action:
-      - service: notify.alexa_media_echo_dot_de_jonathan
-        data:
-          message: Colocar iPhone para carregar
-          data:
-            type: tts
-      - service: notify.mobile_app_iphone
-        data:
-          title: Aviso de bateria
-          message: A bateria do seu iPhone precisa ser carregada
-          data:
-            message: carregue o iPhone
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "home"
+            sequence:
+              - service: notify.alexa_media_echo_dot_de_jonathan
+                data:
+                  message: Colocar iPhone para carregar
+                  data:
+                    type: tts
+              - service: notify.mobile_app_iphone
+                data:
+                  title: Aviso de bateria
+                  message: A bateria do seu iPhone precisa ser carregada
+                  data:
+                    message: carregue o iPhone
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "not_home"
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                  title: Aviso de bateria
+                  message: A bateria do seu iPhone precisa ser carregada
+                  data:
+                    message: carregue o iPhone
 
   - alias: iPhone battery full
     id: "hass-10"
@@ -233,20 +255,34 @@ automation:
         above: 99
     condition:
       - condition: state
-        entity_id: device_tracker.iphone
-        state: "home"
-      - condition: state
         entity_id: sensor.iphone_battery_state
         state: "Full"
     action:
-      - service: notify.alexa_media_echo_dot_de_jonathan
-        data:
-          message: O iPhone está carregado
-          data:
-            type: tts
-      - service: notify.mobile_app_iphone
-        data:
-          title: Aviso de bateria
-          message: A bateria do seu iPhone está carregada
-          data:
-            message: retire do carregador
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "not_home"
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                  title: Aviso de bateria
+                  message: A bateria do seu iPhone está carregada
+                  data:
+                    message: retire do carregador
+              - service: notify.alexa_media_echo_dot_de_jonathan
+                data:
+                  message: O iPhone está carregado
+                  data:
+                    type: tts
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "home"
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                  title: Aviso de bateria
+                  message: A bateria do seu iPhone está carregada
+                  data:
+                    message: retire do carregador
