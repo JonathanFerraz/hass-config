@@ -334,7 +334,3 @@ blurred:
       #popup>div.range-holder>input[type=range]::-webkit-slider-thumb {
         cursor: grabbing;
       }
-
-    ha-dialog>Div>hui-vertical-stack-card$#root>hui-entidades-cartão:nth-child(3)$#states>Div>hui-elemento$hui-horizontal-stack-card$#root>hui-entidades-cartão:nth-child(1)$#states>Div>hui-sensor-entidade-linha$hui-generic-entidade-row$div.info.text-content {
-      display: none
-    }
