@@ -11,6 +11,7 @@
 
     - type: custom:mini-graph-card
       icon: mdi:currency-usd
+      entities:
         - sensor.btc_price
       decimals: 2
       points_per_hour: 12
