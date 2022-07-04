@@ -262,7 +262,7 @@ automation:
           - conditions:
               - condition: state
                 entity_id: device_tracker.iphone
-                state: "not_home"
+                state: "home"
             sequence:
               - service: notify.mobile_app_iphone
                 data:
@@ -278,7 +278,7 @@ automation:
           - conditions:
               - condition: state
                 entity_id: device_tracker.iphone
-                state: "home"
+                state: "not_home"
             sequence:
               - service: notify.mobile_app_iphone
                 data:
