@@ -2,7 +2,7 @@ automation:
   # Presence detection
 
   - alias: Turn all leds off when home leave
-    id: "hass-1"
+    id: "18978458711"
     trigger:
       - entity_id: person.jonathan_ferraz
         platform: state
@@ -27,7 +27,7 @@ automation:
           message: "Desligando as leds do setup"
 
   - alias: Turn all leds on when home enter
-    id: "hass-2"
+    id: "18978458712"
     trigger:
       - entity_id: person.jonathan_ferraz
         platform: state
@@ -50,7 +50,7 @@ automation:
           message: "Ligando as leds do setup"
 
   - alias: person_home
-    id: "hass-4"
+    id: "18978458714"
     mode: parallel
     trigger:
       platform: state
@@ -75,7 +75,7 @@ automation:
   # LED Routine
 
   - alias: Setup led morning
-    id: "hass-5"
+    id: "18978458715"
     trigger:
       - platform: time
         at: "09:25:00"
@@ -105,7 +105,7 @@ automation:
           option: Morning
 
   - alias: Setup led effects
-    id: "hass-6"
+    id: "18978458716"
     trigger:
       platform: time
       at: "10:30:00"
@@ -132,7 +132,7 @@ automation:
         entity_id: switch.hyperion_controller
 
   - alias: Turn on script on workdays
-    id: "hass-8"
+    id: "18978458718"
     trigger:
       platform: time
       at: "09:25:00"
@@ -150,7 +150,7 @@ automation:
   # Other
 
   - alias: Clear log filesize
-    id: "hass-3"
+    id: "18978458713"
     trigger:
       platform: numeric_state
       entity_id: sensor.home_assistant_log_size
@@ -159,29 +159,15 @@ automation:
       service: shell_command.ha_purge_logs
 
   - alias: Rig miner alert
-    id: "hass-7"
+    id: "18978458717"
     trigger:
       - platform: state
-        entity_id: sensor.rtx3060_speed_formatted
-        to: "0.0"
-      - platform: state
-        entity_id: sensor.gtx1660_speed_formatted
-        to: "0.0"
+        entity_id: sensor.setup_speed
+        to: "0"
     condition:
       - condition: state
-        entity_id: sensor.geforce_rtx_3060_status
+        entity_id: sensor.setup_status
         state: Mining
-      - condition: state
-        entity_id: sensor.geforce_gtx_1660_status
-        state: Mining
-      - condition: and
-        conditions:
-          - condition: state
-            entity_id: sensor.rtx3060_speed_formatted
-            state: "0.0"
-          - condition: state
-            entity_id: sensor.gtx1660_speed_formatted
-            state: "0.0"
       - condition: time
         after: "09:00:00"
         before: "00:00:00"
@@ -208,7 +194,7 @@ automation:
   # Battery Alert
 
   - alias: iPhone battery low
-    id: "hass-9"
+    id: "18978458719"
     trigger:
       - platform: numeric_state
         entity_id: sensor.iphone_battery_level
@@ -248,7 +234,7 @@ automation:
                     message: carregue o iPhone
 
   - alias: iPhone battery full
-    id: "hass-10"
+    id: "189784587110"
     trigger:
       - platform: numeric_state
         entity_id: sensor.iphone_battery_level
@@ -286,3 +272,26 @@ automation:
                   message: A bateria do seu iPhone está carregada
                   data:
                     message: retire do carregador
+
+  - alias: Restart IOTLink
+    id: "189784587111"
+    trigger:
+      - platform: time_pattern
+        minutes: "/10"
+    condition:
+      - condition: state
+        entity_id: sensor.pc_gamer_ssd_usado_c
+        state: "unknown"
+      - condition: state
+        entity_id: device_tracker.iphone
+        state: "home"
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+          title: PC Status
+          message: IOTLink irá reiniciar em 10seg
+          data:
+            message: IOTLink irá reiniciar em 10seg
+      - delay: "00:00:10"
+      - data: {}
+        service: script.pc_gamer_restart_iotlink
