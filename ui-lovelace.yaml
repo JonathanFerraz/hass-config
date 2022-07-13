@@ -9,16 +9,21 @@ sidebar:
         --sidebar-background: #1014165e;
         --sidebar-text-color: #bcbebf;
     }
+
     .sidebarMenu li.active {
        background-color: #232729!important;
     }
+
+    .sidebar-inner > h1:nth-child(2) {
+      font-weight: bold;
+    }
+
     .digitalClock {
       text-align: left;
-      padding-bottom: 1px;
-      padding-top: 20px
-      font-size: 205px;
-      line-height: 95px;
+      padding-top: 20px!important;
+      padding-bottom: 20px!important;
     }
+
     .date {
       text-align: left;
     }
@@ -47,60 +52,7 @@ sidebar:
       navigation_path: "/lovelace/mining"
       name: "Mining"
       icon: mdi:currency-btc
-  bottomCard:
-    type: horizontal-stack
-    cardOptions:
-      cards:
-        - type: horizontal-stack
-          view_layout:
-            grid-area: footer
-          cards:
-            - type: custom:button-card
-              name: >
-                <ha-icon icon="mdi:nas"></ha-icon> HASS
-              tap_action: !include popup/footer/hass.yaml
-              variables:
-                notify: >
-                  [[[
-                    let status = states['sensor.nas_volume_1_status'],
-                      security = states['binary_sensor.nas_security_status'],
-                      disk_use = states['sensor.disk_use_percent'],
-                      nas_update = states['binary_sensor.nas_update_available'];
-                    if (status && security && disk_use && nas_update) {
-                      return nas_update.state === 'on'
-                        ? 1
-                        : status.state === 'background_scrubbing' ||
-                          security.state === 'on' ||
-                          parseFloat(disk_use.state) >= 85;
-                    }
-                  ]]]
-              template: footer
-
-        - type: custom:button-card
-          name: >
-            <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updates
-          tap_action: !include popup/footer/updates.yaml
-          variables:
-            notify: >
-              [[[
-                let hass_installed = hass.config.version,
-                  hass_version_latest = states['sensor.hass_version_latest'],
-                  hacs = states['sensor.hacs'];
-
-                if (hass_version_latest && hass_version_latest.state.includes('.')
-                  && hacs && Number.isInteger(parseInt(hacs.state))) {
-
-                  let hass_latest = hass_version_latest.state,
-                    hass_count = hass_installed !== hass_latest ? 1 : 0;
-                  return hass_count + parseInt(hacs.state);
-                }
-                return 0;
-              ]]]
-          template: footer
-    cardStyle: |
-      :host {
-        width: 100%;
-      }
+      active: none
   template: |
     <ul>
       <li>

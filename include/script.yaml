@@ -71,3 +71,11 @@ script:
         data:
           topic: "iotlink/workgroup/setup/commands/run"
           payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\CloseHyperion.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+
+  pc_gamer_restart_iotlink:
+    alias: "PC Gamer - Reiniciar IOTLink"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/setup/commands/run"
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\RestartIOTLink.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'

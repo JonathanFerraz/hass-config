@@ -33,6 +33,18 @@ sensor:
         unit_of_measurement: "MH/s"
         value_template: "{{ states('sensor.geforce_gtx_1660_speed') | float | round(2)}}"
 
+      average_btc:
+        friendly_name: "Average BTC"
+        value_template: "{{ (states('sensor.mean_btc_price') | float) | round(0) }}"
+
+      min_btc:
+        friendly_name: "Min BTC"
+        value_template: "{{ (states('sensor.mean_btc_price') | float * 0.973) | round(0) }}"
+
+      mid_btc:
+        friendly_name: "Mid BTC"
+        value_template: "{{ (states('sensor.mean_btc_price') | float * 0.987) | round(0) }}"
+
       # Weather
       weather_precipitation:
         friendly_name: "Chance de chuva"
@@ -60,19 +72,6 @@ sensor:
         entity_id: update.home_assistant_core_update
         value_template: "{{ state_attr('update.home_assistant_core_update', 'latest_version') }}"
 
-      # Energy
-      wled_ambilight_power:
-        friendly_name: "Mesa Power"
-        unit_of_measurement: "W"
-        value_template: "{{ states('sensor.ambilight_estimated_current') | float * 5 / 1000 }}"
-        device_class: energy
-
-      wled_mesa_power:
-        friendly_name: "Ambilight Power"
-        unit_of_measurement: "W"
-        value_template: "{{ states('sensor.mesa_estimated_current') | float * 5 / 1000 }}"
-        device_class: energy
-
   - platform: command_line
     name: hacs_installed
     command: |-
@@ -97,6 +96,14 @@ sensor:
       - repositories
     scan_interval: 86400
 
+  - platform: average
+    name: "Mean BTC price"
+    duration:
+      hours: 12
+      minutes: 00
+    entities:
+      - sensor.btc_price
+
   # Coinmarketcap
   - platform: command_line
     name: coinmarketcap_curl
@@ -112,11 +119,14 @@ sensor:
     unit_prefix: k
     round: 2
 
-  - platform: integration
-    source: sensor.wled_ambilight_power
-    name: Ambilight - Consumo
-    unit_prefix: k
-    round: 2
+  - platform: powercalc
+    create_group: All setup leds kWh
+    name: LED Setup kWh
+    entities:
+      - entity_id: light.ambilight
+      - entity_id: light.mesa
+    wled:
+      voltage: 5
 
   # IOTLink
 

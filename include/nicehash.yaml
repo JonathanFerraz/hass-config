@@ -1,9 +1,9 @@
-nicehash:
-  organization_id: !secret nice-hash-organization_id
-  api_key: !secret nice-hash-api_key
-  api_secret: !secret nice-hash-api_secret
-  currency: USD
-  balances: true
-  rigs: true
-  devices: true
-  payouts: true
+# nicehash:
+#   organization_id: !secret nice-hash-organization_id
+#   api_key: !secret nice-hash-api_key
+#   api_secret: !secret nice-hash-api_secret
+#   currency: USD
+#   balances: true
+#   rigs: true
+#   devices: true
+#   payouts: true

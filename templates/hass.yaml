@@ -7,7 +7,3 @@
         friendly_name: >
           Instalado {{ states('sensor.hass_version_installed') }}
         icon: mdi:home-assistant
-
-    - unique_id: hacs_version
-      state: >
-        {{ device_attr(device_id('sensor.hacs'), 'sw_version') }}

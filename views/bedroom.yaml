@@ -126,14 +126,14 @@
           name: LED Monitor
           template:
             - light
-            - icon_hue
+            - icon_ledstripe
 
         - type: custom:button-card
           entity: light.mesa
           name: LED Mesa
           template:
             - light
-            - icon_hue
+            - icon_ledstripe
 
         - type: custom:button-card
           entity: switch.monitor_power
@@ -247,55 +247,83 @@
             retain: sensor.matheus_last_changed
           template: person
 
+        - type: custom:button-card
+          entity: script.home_arrive
+          name: Casa
+          hold_action:
+            action: none
+          variables:
+            circle_input: >
+              [[[
+                return entity === undefined || Math.round(states['zone.home'].state / 2 * 100 ) ;
+              ]]]
+          custom_fields:
+            circle: >
+              [[[
+                  let input = variables.circle_input,
+                    radius = 20.5,
+                    circumference = radius * 12;
+                  let inner_text = states['zone.home'].state
+                  return `
+                    <svg viewBox="0 0 50 50">
+                      <circle cx="25" cy="25" r="20.5" stroke="#8d8e90" stroke-width="1.5" fill="#00000000" />
+                      <text x="49%" y="53%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${inner_text} / 2</text>
+                    </svg>
+                  `;
+              ]]]
+          template:
+            - base
+            - icon_home
+            - circle
+
         #################################################
         #                                               #
         #                    FOOTER                     #
         #                                               #
         #################################################
 
-        # - type: horizontal-stack
-        #   view_layout:
-        #     grid-area: footer
-        #   cards:
-        #     - type: custom:button-card
-        #       name: >
-        #         <ha-icon icon="mdi:nas"></ha-icon> HASS
-        #       tap_action: !include popup/footer/hass.yaml
-        #       variables:
-        #         notify: >
-        #           [[[
-        #             let status = states['sensor.nas_volume_1_status'],
-        #               security = states['binary_sensor.nas_security_status'],
-        #               disk_use = states['sensor.disk_use_percent'],
-        #               nas_update = states['binary_sensor.nas_update_available'];
-        #             if (status && security && disk_use && nas_update) {
-        #               return nas_update.state === 'on'
-        #                 ? 1
-        #                 : status.state === 'background_scrubbing' ||
-        #                   security.state === 'on' ||
-        #                   parseFloat(disk_use.state) >= 85;
-        #             }
-        #           ]]]
-        #       template: footer
+        - type: horizontal-stack
+          view_layout:
+            grid-area: footer
+          cards:
+            - type: custom:button-card
+              name: >
+                <ha-icon icon="mdi:nas"></ha-icon> HASS
+              tap_action: !include /config/popup/footer/hass.yaml
+              variables:
+                notify: >
+                  [[[
+                    let hass_installed = hass.config.version,
+                      hass_version_latest = states['sensor.hass_version_latest']
 
-        # - type: custom:button-card
-        #   name: >
-        #     <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updates
-        #   tap_action: !include popup/footer/updates.yaml
-        #   variables:
-        #     notify: >
-        #       [[[
-        #         let hass_installed = hass.config.version,
-        #           hass_version_latest = states['sensor.hass_version_latest'],
-        #           hacs = states['sensor.hacs'];
+                    if (hass_version_latest && hass_version_latest.state.includes('.')) {
 
-        #         if (hass_version_latest && hass_version_latest.state.includes('.')
-        #           && hacs && Number.isInteger(parseInt(hacs.state))) {
+                      let hass_latest = hass_version_latest.state,
+                        hass_count = hass_installed !== hass_latest ? 1 : 0;
+                      return hass_count;
+                    }
+                    return 0;
+                  ]]]
+              template: footer
 
-        #           let hass_latest = hass_version_latest.state,
-        #             hass_count = hass_installed !== hass_latest ? 1 : 0;
-        #           return hass_count + parseInt(hacs.state);
-        #         }
-        #         return 0;
-        #       ]]]
-        #   template: footer
+        - type: custom:button-card
+          name: >
+            <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Updates
+          tap_action: !include /config/popup/footer/updates.yaml
+          variables:
+            notify: >
+              [[[
+                let hass_installed = hass.config.version,
+                  hass_version_latest = states['sensor.hass_version_latest'],
+                  hacs = states['sensor.hacs'];
+
+                if (hass_version_latest && hass_version_latest.state.includes('.')
+                  && hacs && Number.isInteger(parseInt(hacs.state))) {
+
+                  let hass_latest = hass_version_latest.state,
+                    hass_count = hass_installed !== hass_latest ? 1 : 0;
+                  return hass_count + parseInt(hacs.state);
+                }
+                return 0;
+              ]]]
+          template: footer
