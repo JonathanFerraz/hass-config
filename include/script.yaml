@@ -38,7 +38,7 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\StartWork.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\launching_start_work.bat", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
 
   pc_gamer_stop_work:
     alias: "PC Gamer - Finalizar Trabalho"
@@ -46,7 +46,7 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\EndWork.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\launching_end_work.bat", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
 
   pc_gamer_remove_temporary_files:
     alias: "PC Gamer - Limpar arquivos temporários"
@@ -54,7 +54,7 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\RemoveTemporaryFiles.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\launching_remove_temporary_files.bat", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
 
   pc_gamer_run_hyperion:
     alias: "PC Gamer - Iniciar Hyperion"
@@ -62,7 +62,7 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Program Files\\Hyperion\\bin\\hyperiond.exe", "args": "/AUTO", "path": "C:\\Program Files\\Hyperion\\bin", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Program Files\\Hyperion\\bin\\hyperiond.exe", "path": "C:\\Program Files\\Hyperion\\bin", "user": "", "visible": false, "fallback": false }'
 
   pc_gamer_close_hyperion:
     alias: "PC Gamer - Fechar Hyperion"
@@ -70,7 +70,7 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\CloseHyperion.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\CloseHyperion.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
 
   pc_gamer_restart_iotlink:
     alias: "PC Gamer - Reiniciar IOTLink"
@@ -78,4 +78,11 @@ script:
       - service: mqtt.publish
         data:
           topic: "iotlink/workgroup/setup/commands/run"
-          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\RestartIOTLink.bat", "args": "/AUTO", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": true, "fallback": true }'
+          payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\launching_iotlink_reboot_service.bat", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
+
+  # pc_games_led_setup:
+  #   alias: LED TEST
+  #   sequence:
+  #     - service: mqtt.publish
+  #       topic: "iotlink/workgroup/setup/commands/run"
+  #       payload: '{ "command": "C:\\OpenRGB\\OpenRGB.exe", "args": "-d 0 -c ffffff -m direct", "path": "C:\\OpenRGB\\", "user": "", "visible": true, "fallback": true}'

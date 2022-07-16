@@ -9,12 +9,6 @@ sensor:
       - time
       - date
 
-  - platform: systemmonitor
-    resources:
-      - type: memory_use_percent
-      - type: processor_use
-      - type: last_boot
-
   - platform: template
     sensors:
       # Mining tracker
@@ -23,27 +17,11 @@ sensor:
         unit_of_measurement: "BRL"
         value_template: "{{ ((states.sensor.coinmarketcap_curl.attributes.data.BTC.quote.BRL.price) | float) | round(2) }}"
 
-      rtx3060_speed_formatted:
-        friendly_name: "RTX 3060 Speed"
-        unit_of_measurement: "MH/s"
-        value_template: "{{ states('sensor.geforce_rtx_3060_speed') | float | round(2)}}"
-
-      gtx1660_speed_formatted:
-        friendly_name: "GTX 1660 Speed"
-        unit_of_measurement: "MH/s"
-        value_template: "{{ states('sensor.geforce_gtx_1660_speed') | float | round(2)}}"
-
-      average_btc:
-        friendly_name: "Average BTC"
-        value_template: "{{ (states('sensor.mean_btc_price') | float) | round(0) }}"
-
-      min_btc:
-        friendly_name: "Min BTC"
-        value_template: "{{ (states('sensor.mean_btc_price') | float * 0.973) | round(0) }}"
-
-      mid_btc:
-        friendly_name: "Mid BTC"
-        value_template: "{{ (states('sensor.mean_btc_price') | float * 0.987) | round(0) }}"
+      nicehash_available_account_balance:
+        friendly_name: "Nicehash available account balance"
+        value_template: >-
+          {{ (states('sensor.nh_mining_unpaidamount_brl')| float |round(2)) }} R$ /
+          {{ (states('sensor.nh_mining_totalbalance_brl')| float |round(2)) }} R$
 
       # Weather
       weather_precipitation:
@@ -71,6 +49,17 @@ sensor:
         friendly_name: "Home Assistant Core: Latest"
         entity_id: update.home_assistant_core_update
         value_template: "{{ state_attr('update.home_assistant_core_update', 'latest_version') }}"
+
+      # Temperatures
+      rtx3060_temperature_measure:
+        friendly_name: "RTX 3060 Temperature Measure"
+        unit_of_measurement: "°C"
+        value_template: "{{ states('sensor.pc_gamer_ryzen_5_3600_temperature') }}"
+
+      cpu_temperature_measure:
+        friendly_name: "AMD Ryzen 5 3600 Temperature Measure"
+        unit_of_measurement: "°C"
+        value_template: "{{ states('sensor.pc_gamer_rtx_3060_temperature') }}"
 
   - platform: command_line
     name: hacs_installed
@@ -119,6 +108,12 @@ sensor:
     unit_prefix: k
     round: 2
 
+  - platform: integration
+    source: sensor.tomada_aquecedor_power
+    name: Aquecedor - Consumo
+    unit_prefix: k
+    round: 2
+
   - platform: powercalc
     create_group: All setup leds kWh
     name: LED Setup kWh
@@ -164,6 +159,28 @@ sensor:
     qos: 1
 
   - platform: mqtt
+    name: "PC Gamer - Games & Apps Usado (E)"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/hard-drive/e/drive-usage"
+    unit_of_measurement: "%"
+    icon: mdi:chart-donut
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - SSD Usado (F)"
+    state_topic: "iotlink/workgroup/setup/windows-monitor/stats/hard-drive/f/drive-usage"
+    unit_of_measurement: "%"
+    icon: mdi:chart-donut
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/setup/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
     name: "PC Gamer - Up Time"
     state_topic: "iotlink/workgroup/setup/windows-monitor/stats/system/uptime"
     unit_of_measurement: "seconds"
@@ -173,3 +190,34 @@ sensor:
     payload_available: "ON"
     payload_not_available: "OFF"
     qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - Game rum"
+    state_topic: "iotlink/workgroup/setup/process-monitor/processes/games/sensor"
+    value_template: "{{ value }}"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - RTX 3060 Temperature"
+    state_topic: "iotlink/workgroup/setup/monitor/stats/gpu_nvidia/temperatures/gpu_core"
+    value_template: "{{ value }}"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "PC Gamer - Ryzen 5 3600 Temperature"
+    state_topic: "iotlink/workgroup/setup/monitor/stats/cpu/temperatures/core_(tctl/tdie)"
+    value_template: "{{ value }}"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: My Teams Status
+    state_topic: "iotlink/workgroup/setup/microsoft-teams-monitor/status"
+    value_template: "{{ value }}"
+    icon: mdi:microsoft-teams
+    # OnThePhone (Status em chamada)

@@ -3,6 +3,7 @@ homekit:
       include_entities:
         - light.ambilight
         - light.mesa
+        - light.setup_hardware_lights
         - switch.monitor_power
         - switch.hyperion_controller
         - sensor.home_apparent_temperature
@@ -20,3 +21,5 @@ homekit:
         name: Temperatura
       climate.ar_condicionado:
         name: Ar Condicionado
+      light.setup_hardware_lights:
+        name: Hardware led

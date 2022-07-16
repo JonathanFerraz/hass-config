@@ -10,21 +10,18 @@ automation:
         to: not_home
     condition: []
     action:
-      - entity_id: light.ambilight
-        service: light.turn_off
-      - entity_id: light.mesa
+      - entity_id: light.all_setup_lights
         service: light.turn_off
       - service: switch.turn_off
         entity_id: switch.hyperion_controller
-      - service: switch.turn_off
-        entity_id: switch.monitor_power
-      - data: {}
-        service: script.pc_gamer_lock
       - service: notify.mobile_app_iphone
         data:
           title: >
             Detecção de presença
           message: "Desligando as leds do setup"
+      - delay: "00:00:05"
+      - service: switch.turn_off
+        entity_id: switch.monitor_power
 
   - alias: Turn all leds on when home enter
     id: "18978458712"
@@ -35,9 +32,7 @@ automation:
         to: home
     condition: []
     action:
-      - entity_id: light.ambilight
-        service: light.turn_on
-      - entity_id: light.mesa
+      - entity_id: light.all_setup_lights
         service: light.turn_on
       - service: switch.turn_on
         entity_id: switch.hyperion_controller
@@ -149,15 +144,6 @@ automation:
 
   # Other
 
-  - alias: Clear log filesize
-    id: "18978458713"
-    trigger:
-      platform: numeric_state
-      entity_id: sensor.home_assistant_log_size
-      above: 50
-    action:
-      service: shell_command.ha_purge_logs
-
   - alias: Rig miner alert
     id: "18978458717"
     trigger:
@@ -166,8 +152,8 @@ automation:
         to: "0"
     condition:
       - condition: state
-        entity_id: sensor.setup_status
-        state: Mining
+        entity_id: sensor.nh_setup_minerstatus
+        state: MINING
       - condition: time
         after: "09:00:00"
         before: "00:00:00"
@@ -185,6 +171,9 @@ automation:
       - condition: state
         entity_id: person.jonathan_ferraz
         state: home
+      - condition: state
+        entity_id: sensor.my_teams_status
+        state: OnThePhone
       - service: notify.alexa_media_echo_dot_de_jonathan
         data:
           message: Não está minerando
@@ -274,24 +263,55 @@ automation:
                     message: retire do carregador
 
   - alias: Restart IOTLink
+    description: >-
+      We monitor IOTLink sensors. If the sensors are unavailable,
+      a script will be run that will restart the IOTLink
     id: "189784587111"
     trigger:
+      - platform: state
+        entity_id:
+          - sensor.pc_gamer_ssd_usado_c
+        to: unknown
+        for:
+          hours: 0
+          minutes: 0
+          seconds: 0
       - platform: time_pattern
-        minutes: "/10"
+        minutes: /2
+
     condition:
+      - condition: template
+        value_template: '{{ is_state("binary_sensor.my_computer_connected", "on") }}'
+      - condition: template
+        value_template: '{{ is_state("sensor.pc_gamer_ssd_usado_c", "unknown") }}'
       - condition: state
-        entity_id: sensor.pc_gamer_ssd_usado_c
-        state: "unknown"
-      - condition: state
-        entity_id: device_tracker.iphone
-        state: "home"
+        entity_id: person.jonathan_ferraz
+        state: home
     action:
-      - service: notify.mobile_app_iphone
-        data:
-          title: PC Status
-          message: IOTLink irá reiniciar em 10seg
-          data:
-            message: IOTLink irá reiniciar em 10seg
-      - delay: "00:00:10"
       - data: {}
         service: script.pc_gamer_restart_iotlink
+    mode: single
+
+  - alias: Turn on ambilight
+    id: "18978458787"
+    trigger:
+      - entity_id: binary_sensor.setup_games
+        platform: state
+        from: "off"
+        to: "on"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.hyperion_controller
+
+  - alias: Turn off ambilight
+    id: "18978458237"
+    trigger:
+      - entity_id: binary_sensor.setup_games
+        platform: state
+        from: "on"
+        to: "off"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.hyperion_controller
+      - entity_id: light.ambilight
+        service: light.turn_on

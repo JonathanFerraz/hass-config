@@ -65,58 +65,12 @@
 
     #################################################
     #                                               #
-    #                    SIDEBAR                    #
-    #                                               #
-    #################################################
-
-    # - type: vertical-stack
-    #   view_layout:
-    #     grid-area: sidebar
-    #   cards:
-    #     - type: custom:button-card
-    #       entity: sensor.template_sidebar
-    #       template: sidebar
-
-    # - type: vertical-stack
-    #   view_layout:
-    #     grid-area: sidebar
-    #   cards:
-    #     - type: custom:sidebar-card
-    #       entity: sensor.template_sidebar
-    #       template: sidebar
-    #       digitalClock: true
-    #       sidebarMenu:
-    #         - action: navigate
-    #           navigation_path: "/lovelace/home"
-    #           name: "Home"
-    #           active: true
-    #           hold_action:
-    #             action: none
-    #           style:
-    #             border-radius: 5vw
-    #             left: 11.7%
-    #             top: 26%
-    #             width: 20.5078125%
-    #         - action: navigate
-    #           navigation_path: "/lovelace/mining"
-    #           name: "Mining"
-    #           active: true
-    #           hold_action:
-    #             action: none
-    #           style:
-    #             border-radius: 5vw
-    #             left: 11.7%
-    #             top: 26%
-    #             width: 20.5078125%
-
-    #################################################
-    #                                               #
     #                     GRID-1                    #
     #                                               #
     #################################################
 
     - type: grid
-      title: Setup
+      title: Luzes
       view_layout:
         grid-area: grid-1
       columns: 2
@@ -276,35 +230,35 @@
             - icon_home
             - circle
 
-        #################################################
-        #                                               #
-        #                    FOOTER                     #
-        #                                               #
-        #################################################
+    #################################################
+    #                                               #
+    #                    FOOTER                     #
+    #                                               #
+    #################################################
 
-        - type: horizontal-stack
-          view_layout:
-            grid-area: footer
-          cards:
-            - type: custom:button-card
-              name: >
-                <ha-icon icon="mdi:nas"></ha-icon> HASS
-              tap_action: !include /config/popup/footer/hass.yaml
-              variables:
-                notify: >
-                  [[[
-                    let hass_installed = hass.config.version,
-                      hass_version_latest = states['sensor.hass_version_latest']
+    - type: horizontal-stack
+      view_layout:
+        grid-area: grid-4
+      cards:
+        - type: custom:button-card
+          name: >
+            <ha-icon icon="mdi:nas"></ha-icon> HASS
+          tap_action: !include /config/popup/footer/hass.yaml
+          variables:
+            notify: >
+              [[[
+                let hass_installed = hass.config.version,
+                  hass_version_latest = states['sensor.hass_version_latest']
 
-                    if (hass_version_latest && hass_version_latest.state.includes('.')) {
+                if (hass_version_latest && hass_version_latest.state.includes('.')) {
 
-                      let hass_latest = hass_version_latest.state,
-                        hass_count = hass_installed !== hass_latest ? 1 : 0;
-                      return hass_count;
-                    }
-                    return 0;
-                  ]]]
-              template: footer
+                  let hass_latest = hass_version_latest.state,
+                    hass_count = hass_installed !== hass_latest ? 1 : 0;
+                  return hass_count;
+                }
+                return 0;
+              ]]]
+          template: footer
 
         - type: custom:button-card
           name: >

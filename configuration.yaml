@@ -51,13 +51,13 @@ lovelace:
       { url: "/local/vanilla-tilt.min.js?v=1.7.2", type: module },
       { url: /local/font.css, type: css },
     ]
-# Custom components
-nicehash:
-  organization_id: !secret nice-hash-organization_id
-  api_key: !secret nice-hash-api_key
-  api_secret: !secret nice-hash-api_secret
-  currency: USD
-  balances: true
-  rigs: true
-  devices: true
-  payouts: true
+# # Custom components
+# nicehash:
+#   organization_id: !secret nice-hash-organization_id
+#   api_key: !secret nice-hash-api_key
+#   api_secret: !secret nice-hash-api_secret
+#   currency: USD
+#   balances: true
+#   rigs: true
+#   devices: true
+#   payouts: true

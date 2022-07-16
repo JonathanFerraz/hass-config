@@ -45,16 +45,11 @@ browser_mod:
             icon: mdi:clock-outline
             device_class: timestamp
 
-          - entity: sensor.amd_ryzen_5_3600_6_core_processor_temperature
-            decimal: 2
+          - entity: sensor.rtx3060_temperature_measure
             name: CPU - Ryzen 5 3600
             icon: mdi:thermometer
 
-          - entity: sensor.geforce_gtx_1660_temperature
-            name: GPU - GTX 1660
-            icon: mdi:thermometer
-
-          - entity: sensor.geforce_rtx_3060_temperature
+          - entity: sensor.cpu_temperature_measure
             name: GPU - RTX 3060
             icon: mdi:thermometer
 
@@ -69,6 +64,32 @@ browser_mod:
             entities:
               - entity: sensor.pc_gamer_ssd_usado_c
                 name: Windows - 240GB
+                icon: custom:imac-ssd
+
+          - type: custom:bar-card
+            width: 45%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: "%"
+            positions: *bar_card_positions
+            severity: *bar_card_severity
+            entity_row: true
+            entities:
+              - entity: sensor.pc_gamer_games_apps_usado_e
+                name: Games & Apps - 1TB
+                icon: custom:imac-ssd
+
+          - type: custom:bar-card
+            width: 45%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: "%"
+            positions: *bar_card_positions
+            severity: *bar_card_severity
+            entity_row: true
+            entities:
+              - entity: sensor.pc_gamer_ssd_usado_f
+                name: SSD - 120GB
                 icon: custom:imac-ssd
 
       - type: horizontal-stack
@@ -88,75 +109,3 @@ browser_mod:
             tap_action:
               action: call-service
               service: script.pc_gamer_remove_temporary_files
-
-      - type: entities
-        show_header_toggle: false
-        card_mod:
-          class: add-header
-          style: |
-            mini-graph-card {
-              margin: -20.7px 0px 0px 0px;
-            }
-            .footer {
-              overflow: hidden !important;
-            }
-            #states {
-              padding: 21px !important
-            }
-
-        entities:
-          - type: custom:hui-element
-            card_type: horizontal-stack
-            cards:
-              - type: entities
-                entities:
-                  - entity: sensor.speedtest_download
-                    icon: mdi:download
-                    show_state: true
-                    show_name: false
-                    tap_action:
-                      action: none
-                    card_mod:
-                      style: >
-                        :host {
-                          --paper-item-icon-color: green;
-                        }
-
-              - type: entities
-                entities:
-                  - entity: sensor.speedtest_upload
-                    icon: mdi:upload
-                    tap_action:
-                      action: none
-                    card_mod:
-                      style: >
-                        :host {
-                          --paper-item-icon-color: #385581;
-                        }
-        footer:
-          type: custom:mini-graph-card
-          entities:
-            - color: "#385581"
-              entity: sensor.speedtest_upload
-              show_points: false
-            - color: green
-              entity: sensor.speedtest_download
-              show_points: false
-          align_state: left
-          group: false
-          points_per_hour: 15
-          line_width: 3
-          hour24: true
-          hours_to_show: 1.5
-          show:
-            {
-              fill: fade,
-              icon: false,
-              name: false,
-              state: false,
-              name_adaptive_color: true,
-              labels: false,
-              legend: false,
-            }
-          tap_action:
-            action: none

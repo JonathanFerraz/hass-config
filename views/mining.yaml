@@ -14,11 +14,11 @@
       average: true
       color_thresholds_transition: smooth
       color_thresholds:
-        - value: "{{ states('sensor.average_btc') | float }}"
+        - value: 110000
           color: "#34eb8c"
-        - value: 103000
+        - value: 108000
           color: "#ebd934"
-        - value: 102000
+        - value: 105000
           color: "#eb3434"
       show:
         labels: false
@@ -36,8 +36,8 @@
         }
 
     - type: entity
-      title: Nicehash account balance
-      entity: sensor.nicehash_available_account_balance_usd
+      title: BTC Balance Unpaid / Paid
+      entity: sensor.nicehash_available_account_balance
       tap_action: none
       hold_action: none
       icon: mdi:currency-usd
@@ -47,8 +47,22 @@
           border-radius: 12px
         }
 
+    # - type: entity
+    #   title: BTC Balance Unpaid / Paid
+    #   state: >-
+    #     {{ (states('sensor.nh_mining_unpaidamount_brl')| float |round(2)) }}R$ /
+    #     {{ (states('sensor.nh_mining_totalbalance_brl')| float |round(2)) }}R$
+    #   tap_action: none
+    #   hold_action: none
+    #   icon: mdi:currency-brl
+    #   style: |
+    #     ha-card {
+    #       background: #00000020;
+    #       border-radius: 12px
+    #     }
+
     - type: custom:mini-graph-card
-      decimals: 8
+      decimals: 2
       smoothing: true
       animate: true
       update_interval: 5
@@ -62,19 +76,7 @@
         legend: false
         fill: true
       entities:
-        - sensor.setup_profitability
-      style: |
-        ha-card { 
-          background: #00000020;
-          border-radius: 12px
-        }
-
-    - type: custom:mini-graph-card
-      decimals: 8
-      show:
-        graph: bar
-      entities:
-        - sensor.nicehash_recent_mining_payout
+        - sensor.nh_mining_totalprofitability_brl
       style: |
         ha-card { 
           background: #00000020;
@@ -86,195 +88,13 @@
       show:
         graph: bar
       entities:
-        - entity: sensor.setup_speed
+        - entity: sensor.nh_setup_daggerhashimoto_speedaccepted
           name: SETUP
-        - entity: sensor.geforce_rtx_3060_speed
-          name: RTX 3060
-        - entity: sensor.geforce_gtx_1660_speed
-          name: GTX 1660
       style: |
         ha-card { 
           background: #00000020;
           border-radius: 12px
         }
-
-    # - type: custom:button-card
-    #   view_layout:
-    #     grid-area: seven
-    #   template:
-    #     - widgets
-    #   name: BATTERIER
-    #   styles:
-    #     name:
-    #       - font-size: 14px
-    #       - font-weight: bold
-    #       - top: 20px
-    #       - left: 20px
-    #       - position: absolute
-    #     custom_fields:
-    #       iphonese:
-    #         - top: 40px
-    #         - left: '-5px'
-    #         - width: 110%
-    #         - border-bottom: 1px solid rgb(255,255,255,0.1)
-    #         - padding: 10px
-    #         - position: absolute
-    #         - font-size: 16px
-    #         - text-shadow: 0px 0px 1px black
-    #       iphonesebattery:
-    #         - top: 60px
-    #         - right: 15px
-    #         - position: absolute
-    #         - font-size: 14px
-    #       iphone11:
-    #         - top: 100px
-    #         - left: '-5px'
-    #         - width: 110%
-    #         - border-bottom: 1px solid rgb(255,255,255,0.1)
-    #         - padding: 10px
-    #         - position: absolute
-    #         - font-size: 16px
-    #         - text-shadow: 0px 0px 1px black
-    #       iphone11battery:
-    #         - top: 120px
-    #         - right: 15px
-    #         - position: absolute
-    #         - font-size: 14px
-    #       ipad:
-    #         - top: 160px
-    #         - left: '-5px'
-    #         - width: 110%
-    #         - padding: 10px
-    #         - position: absolute
-    #         - font-size: 16px
-    #         - text-shadow: 0px 0px 1px black
-    #       ipadbattery:
-    #         - top: 180px
-    #         - right: 15px
-    #         - position: absolute
-    #         - font-size: 14px
-    #   custom_fields:
-    #     iphonese: |
-    #       [[[
-    #             return `<div align="left"> <ha-icon
-    #               icon="mdi:cellphone"
-    #               style="width: 20px; height: 20px; color:grey; padding: 10px;">
-    #               </ha-icon>iPhone SE</div>`
-    #           ]]]
-    #     iphonesebattery: |
-    #       [[[
-    #         if (states["sensor.iphone_battery_level"].state > 40) {
-    #           let input = states["sensor.iphone_battery_level"].state / 3,
-    #             state = states["sensor.iphone_battery_level"].state,
-    #             color = '#08ff4e';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         } if (states["sensor.iphone_battery_level"].state > 15) {
-    #           let input = states["sensor.iphone_battery_level"].state / 3,
-    #             state = states["sensor.iphone_battery_level"].state,
-    #             color = 'orange';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         } else {
-    #           let state = states["sensor.iphone_battery_level"].state,
-    #             color = 'red';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="5" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         }
-    #       ]]]
-    #     iphone11: |
-    #       [[[
-    #             return `<div align="left"> <ha-icon
-    #               icon="mdi:cellphone"
-    #               style="width: 20px; height: 20px; color:grey; padding: 10px;">
-    #               </ha-icon>iPhone 11</div>`
-    #           ]]]
-    #     iphone11battery: |
-    #       [[[
-    #         if (states["sensor.malins_iphone_battery_level"].state > 40) {
-    #           let input = states["sensor.malins_iphone_battery_level"].state / 3,
-    #             state = states["sensor.malins_iphone_battery_level"].state,
-    #             color = '#08ff4e';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         } if (states["sensor.malins_iphone_battery_level"].state > 15) {
-    #           let input = states["sensor.malins_iphone_battery_level"].state / 3,
-    #             state = states["sensor.malins_iphone_battery_level"].state,
-    #             color = 'orange';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-
-    #           `;
-    #         } else {
-    #           let state = states["sensor.malins_iphone_battery_level"].state,
-    #             color = 'red';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="5" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         }
-    #       ]]]
-    #     ipad: |
-    #       [[[
-    #             return `<div align="left"> <ha-icon
-    #               icon="mdi:tablet-android"
-    #               style="width: 20px; height: 20px; color:grey; padding: 10px;">
-    #               </ha-icon>iPad Pro</div>`
-    #           ]]]
-    #     ipadbattery: |
-    #       [[[
-    #         if (states["sensor.daniels_ipad_battery_level"].state > 40) {
-    #           let input = states["sensor.daniels_ipad_battery_level"].state / 3,
-    #             state = states["sensor.daniels_ipad_battery_level"].state,
-    #             color = '#08ff4e';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         } if (states["sensor.daniels_ipad_battery_level"].state > 15) {
-    #           let input = states["sensor.daniels_ipad_battery_level"].state / 3,
-    #             state = states["sensor.daniels_ipad_battery_level"].state,
-    #             color = 'orange';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="${input}" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         } else {
-    #           let state = states["sensor.daniels_ipad_battery_level"].state,
-    #             color = 'red';
-    #           return `
-    #             <svg width="86" height="24">
-    #               <rect x="40" y="1" rx="5" ry="5" width="40" height="18" stroke="gray" fill="transparent" stroke-width="2"/>
-    #               <rect x="43" y="4" rx="3" ry="3" width="5" height="12" fill="${color}" stroke-width="0"/>
-    #               <rect x="82" y="6" rx="2" ry="2" width="2" height="9" fill="grey" stroke-width="0"/>
-    #           `;
-    #         }
-    #       ]]]
 
     # - type: custom:button-card
     #   entity: sensor.btc_price

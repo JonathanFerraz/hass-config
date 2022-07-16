@@ -1,0 +1,27 @@
+light:
+  - platform: group
+    name: "Setup hardware lights"
+    entities:
+      - light.ene_dram_0
+      - light.ene_dram_1
+      - light.asus_rog_strix_b450_f_gaming_2
+      - light.asus_rog_strix_3060_o12g_v2_gaming_3
+      - light.razer_deathadder_v2_4
+      - light.razer_blackwidow_x_chroma_5
+
+  - platform: switch
+    name: hyperion switch
+    entity_id: switch.hyperion_controler
+
+  - platform: group
+    name: "All setup lights"
+    entities:
+      - light.ene_dram_0
+      - light.ene_dram_1
+      - light.asus_rog_strix_b450_f_gaming_2
+      - light.asus_rog_strix_3060_o12g_v2_gaming_3
+      - light.razer_deathadder_v2_4
+      - light.razer_blackwidow_x_chroma_5
+      - light.ambilight
+      - light.mesa
+      - light.hyperion_switch
