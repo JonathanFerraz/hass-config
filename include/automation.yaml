@@ -1,6 +1,5 @@
 automation:
   # Presence detection
-
   - alias: Turn all leds off when home leave
     id: "18978458711"
     trigger:
@@ -34,8 +33,6 @@ automation:
     action:
       - entity_id: light.all_setup_lights
         service: light.turn_on
-      - service: switch.turn_on
-        entity_id: switch.hyperion_controller
       - service: switch.turn_on
         entity_id: switch.monitor_power
       - service: notify.mobile_app_iphone
@@ -88,6 +85,14 @@ automation:
       - service: light.turn_on
         data:
           entity_id: light.mesa
+      - service: light.turn_on
+        target:
+          entity_id: light.setup_hardware_lights
+        data:
+          brightness: 255
+          rgb_color: [255, 34, 0]
+      - data: {}
+        service: script.pc_gamer_hardware_morning_led
       - service: select.select_option
         target:
           entity_id: select.mesa_preset
@@ -123,8 +128,6 @@ automation:
           entity_id: select.mesa_preset
         data:
           option: Chroma
-      - service: switch.turn_on
-        entity_id: switch.hyperion_controller
 
   - alias: Turn on script on workdays
     id: "18978458718"
@@ -142,6 +145,22 @@ automation:
       - data: {}
         service: script.pc_gamer_start_work
 
+  - alias: Turn on monitor led when ambilight off
+    id: "18978458234"
+    trigger:
+      - platform: state
+        entity_id: switch.hyperion_controller
+        from: "on"
+        to: "off"
+    action:
+      - service: light.turn_off
+        target:
+          entity_id: light.ambilight
+      - delay: "00:00:03"
+      - service: light.turn_on
+        target:
+          entity_id: light.ambilight
+
   # Other
 
   - alias: Rig miner alert
@@ -149,36 +168,57 @@ automation:
     trigger:
       - platform: state
         entity_id: sensor.setup_speed
-        to: "0"
+        to: unavailable
     condition:
       - condition: state
-        entity_id: sensor.nh_setup_minerstatus
+        entity_id: sensor.nh_setup_daggerhashimoto_speedaccepted
         state: MINING
       - condition: time
         after: "09:00:00"
         before: "00:00:00"
     action:
-      - service: notify.mobile_app_iphone
-        data:
-          title: RIG Status
-          message: A RIG não está minerando!
-          data:
-            push:
-              sound:
-                name: default
-                critical: 1
-                volume: 1
-      - condition: state
-        entity_id: person.jonathan_ferraz
-        state: home
-      - condition: state
-        entity_id: sensor.my_teams_status
-        state: OnThePhone
-      - service: notify.alexa_media_echo_dot_de_jonathan
-        data:
-          message: Não está minerando
-          data:
-            type: tts
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "home"
+              - condition: state
+                entity_id: sensor.teams_status_call
+                state: Em call
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                  title: RIG Status
+                  message: A RIG não está minerando!
+                  data:
+                    push:
+                      sound:
+                        name: default
+                        critical: 1
+                        volume: 1
+          - conditions:
+              - condition: state
+                entity_id: device_tracker.iphone
+                state: "home"
+              - condition: state
+                entity_id: sensor.teams_status_call
+                state: Fora da Call
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                  title: RIG Status
+                  message: A RIG não está minerando!
+                  data:
+                    push:
+                      sound:
+                        name: default
+                        critical: 1
+                        volume: 1
+              - service: notify.alexa_media_echo_dot_de_jonathan
+                data:
+                  message: Não está minerando
+                  data:
+                    type: tts
 
   # Battery Alert
 
@@ -313,5 +353,35 @@ automation:
     action:
       - service: switch.turn_off
         entity_id: switch.hyperion_controller
-      - entity_id: light.ambilight
-        service: light.turn_on
+      - delay: "00:00:05"
+      - service: light.turn_on
+        entity_id: light.ambilight
+
+  # TEST
+
+  - alias: ios_notify_hass_update
+    id: "7958228563778"
+    variables:
+      latest: >
+        {{ states('sensor.hass_version_latest') }}
+      installed: >
+        {{ states('sensor.hass_version_installed') }}
+    trigger:
+      platform: state
+      entity_id: sensor.hass_version_latest
+    condition: >
+      {{ installed != latest if '.' in installed and '.' in latest else false }}
+    action:
+      - service: homeassistant.update_entity
+        target:
+          entity_id:
+            - sensor.hass_release_notes
+      - delay:
+          minutes: 30
+      - service: notify.mobile_app_iphone
+        data:
+          title: >
+            {{ latest }} Disponível {{ '\U0001F389' }}
+          message: Ver mudanças
+          data:
+            url: https://www.home-assistant.io/latest-release-notes/
