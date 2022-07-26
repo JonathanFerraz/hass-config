@@ -8,13 +8,14 @@ homekit:
         - switch.hyperion_controller
         - sensor.home_apparent_temperature
         - climate.ar_condicionado
+        - person.jonathan_ferraz
     entity_config:
       light.ambilight:
-        name: LED - Monitor
+        name: Monitor
       light.mesa:
-        name: LED - Mesa
+        name: Mesa
       switch.monitor_power:
-        name: POWER - Monitor
+        name: Monitor
       switch.hyperion_controller:
         name: Ambilight
       sensor.home_apparent_temperature:
@@ -23,3 +24,5 @@ homekit:
         name: Ar Condicionado
       light.setup_hardware_lights:
         name: Hardware led
+      person.jonathan_ferraz:
+        name: Jonathan Ferraz
