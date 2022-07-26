@@ -80,9 +80,21 @@ script:
           topic: "iotlink/workgroup/setup/commands/run"
           payload: '{ "command": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\launching_iotlink_reboot_service.bat", "path": "C:\\Users\\jonat\\OneDrive\\Documentos\\Automations\\Scripts\\", "user": "", "visible": false, "fallback": false }'
 
-  # pc_games_led_setup:
-  #   alias: LED TEST
-  #   sequence:
-  #     - service: mqtt.publish
-  #       topic: "iotlink/workgroup/setup/commands/run"
-  #       payload: '{ "command": "C:\\OpenRGB\\OpenRGB.exe", "args": "-d 0 -c ffffff -m direct", "path": "C:\\OpenRGB\\", "user": "", "visible": true, "fallback": true}'
+  pc_gamer_led_setup:
+    alias: PC Gamer - Hardware morning led
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/setup/commands/run"
+          payload: '{ "command": "C:\\OpenRGB\\OpenRGB.exe", "args": "-p yellow.orp -m direct", "path": "C:\\OpenRGB\\", "user": "", "visible": true, "fallback": true}'
+
+  home_leave:
+    alias: Desligar tudo
+    sequence:
+      - service: homeassistant.turn_off
+        target:
+          entity_id:
+            - light.all_setup_lights
+            - climate.ar_condicionado
+      - delay:
+          seconds: 4
