@@ -16,10 +16,10 @@ homeassistant:
 
     #Sensor
     sensor.home_assistant_v2_db:
-      friendly_name: Databas
+      friendly_name: Database
       icon: mdi:database
 
     sensor.uptime:
-      friendly_name: Senast omstart
+      friendly_name: Uptime
       icon: mdi:update
       device_class: timestamp
