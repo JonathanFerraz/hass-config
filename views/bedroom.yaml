@@ -77,30 +77,29 @@
       cards:
         - type: custom:button-card
           entity: light.ambilight
-          name: LED Monitor
+          name: Monitor
           template:
             - light
             - icon_ledstripe
 
         - type: custom:button-card
           entity: light.mesa
-          name: LED Mesa
+          name: Mesa
           template:
             - light
             - icon_ledstripe
 
         - type: custom:button-card
-          entity: switch.monitor_power
-          name: Monitores
+          entity: light.setup_hardware_lights
+          name: Hardware
           template:
-            - base
-            - icon_tv
+            - light
+            - icon_hue
             - loader
 
         - type: custom:button-card
           entity: switch.hyperion_controller
           name: Ambilight
-
           template:
             - base
             - icon_hue
@@ -130,7 +129,8 @@
           variables:
             lock: >
               [[[
-                return 'locked';
+                let lock = states['person.jonathan_ferraz']
+                return lock === 'not_home' ? 'locked' : 'unlocked';
               ]]]
 
         - type: custom:button-card
@@ -148,8 +148,16 @@
               ]]]
 
         - type: custom:button-card
+          entity: switch.monitor_power
+          name: Monitores
+          template:
+            - base
+            - icon_tv
+            - loader
+
+        - type: custom:button-card
           entity: climate.ar_condicionado
-          name: Clima
+          name: Ar condicionado
           hold_action: !include /config/popup/ar_climate.yaml
           template:
             - base
@@ -238,7 +246,7 @@
 
     - type: horizontal-stack
       view_layout:
-        grid-area: grid-4
+        grid-area: footer
       cards:
         - type: custom:button-card
           name: >
