@@ -61,6 +61,18 @@ sensor:
         unit_of_measurement: "°C"
         value_template: "{{ states('sensor.pc_gamer_rtx_3060_temperature') }}"
 
+      # Teams
+      teams_status_call:
+        friendly_name: "Teams Meeting"
+        value_template: >
+          {% if is_state('sensor.my_teams_status', 'OnThePhone') %}
+            Em call
+          {% elif is_state('sensor.my_teams_status', 'InAMeeting') %}
+            Em call
+          {% else %}
+            Fora da call
+          {% endif %}
+
   - platform: command_line
     name: hacs_installed
     command: |-
